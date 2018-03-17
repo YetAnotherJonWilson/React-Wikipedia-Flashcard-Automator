@@ -17,10 +17,10 @@ class App extends Component {
       .then(response => response.json())
       .then(
         (result) => {
-          console.log(result.query.pages[0].extract);
           this.setState({
-            wikiExtract: result
+            wikiExtract: result.query.pages[0].extract
           });
+          console.log(this.state);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
@@ -28,7 +28,7 @@ class App extends Component {
         (error) => {
           console.log(error);
         }
-      ).then(console.log(this.state));
+      );
   }
   
   render() {
