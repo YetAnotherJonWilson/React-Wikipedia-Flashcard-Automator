@@ -7,28 +7,49 @@ class App extends Component {
     super(props);
 
     this.state = {
+      wikiList: '',
       wikiExtract: ''
     };
     
   }
 
   componentDidMount() {
-    fetch("https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=21490963&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2")
-      .then(response => response.json())
-      .then(
-        (result) => {
-          this.setState({
-            wikiExtract: result.query.pages[0].extract
-          });
-          console.log(this.state);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          console.log(error);
-        }
-      );
+    var pageids = 21490963;
+    var listTitle = 'List%20of%20Presidents%20of%20the%20United%20States';
+
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=${pageids}&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2`)
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          wikiExtract: result.query.pages[0].extract
+        });
+        console.log(this.state);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listTitle}&list=categorymembers&cmtitle=Category:Presidents%20of%20the%20United%20States&cmlimit=50&format=json&formatversion=2`)
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          wikiList: result.query.categorymembers
+        });
+        console.log(this.state);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   
   render() {
