@@ -11,6 +11,8 @@ class App extends Component {
       wikiList: '',
       wikiExtract: ''
     };
+
+    this.getCategories = this.getCategories.bind(this);
     
   }
 
@@ -82,6 +84,29 @@ class App extends Component {
       }
     );
   }
+
+  getCategories(evt) {
+    var title = this.refs.title.value.split(" ");
+    var listPageTitle2 = title.join("%20");
+
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle2}&prop=categories&cllimit=max&format=json&formatversion=2`)
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          wikiCategories: result.query.pages[0].categories
+        });
+        console.log("Categories: ", this.state.wikiCategories);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        console.log(error);
+      }
+    );
+    evt.preventDefault();
+  }
   
   render() {
     
@@ -90,9 +115,9 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Wikipedia Flashcard Automator</h1>
         </header>
-        <form>
+        <form onSubmit={this.getCategories}>
           Wikipedia page title: <br />
-          <input type="text" name="Page-title" /><br />
+          <input type="text" name="Page-title" ref='title' /><br />
           <input type="submit" value="Submit" />
         </form>
       </div>
