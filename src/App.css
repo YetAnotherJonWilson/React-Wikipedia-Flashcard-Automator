@@ -16,3 +16,7 @@
 .App-intro {
   font-size: large;
 }
+
+.No-style-list {
+  list-style-type: none;
+}

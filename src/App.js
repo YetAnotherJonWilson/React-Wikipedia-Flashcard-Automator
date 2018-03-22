@@ -13,39 +13,17 @@ class App extends Component {
     };
 
     this.getCategories = this.getCategories.bind(this);
+    this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     
   }
 
   componentDidMount() {
     // temp values for testing
-    // for step two
-    var categoryTitle = 'Southeast%20Asian%20countries';
+    
     // for step three
     var pageids = 21490963;
     
-    // Step two: find the correct list using the appropriate category name
-    // Sometimes this may require repeating this step with different 
-    // category names until finding a list that contains the correct results
-    // (i.e. names of Presidents, or Asian countries) listed
-    // by page titles (not Category names), with correlated pageids
-    // Note: Add ability to dynamically choose list limit based on expected number of results
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=Category:${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          wikiList: result.query.categorymembers
-        });
-        console.log("List using Category Title: ", this.state.wikiList);
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        console.log(error);
-      }
-    );
-
+    
     // Step three: Use pageid's to get extracts in plaintext 
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=${pageids}&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2`)
     .then(response => response.json())
@@ -54,7 +32,7 @@ class App extends Component {
         this.setState({
           wikiExtract: result.query.pages[0].extract
         });
-        console.log("Extract derived from pageid: ", this.state.wikiExtract);
+        // console.log("Extract derived from pageid: ", this.state.wikiExtract);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -90,6 +68,36 @@ class App extends Component {
     );
     evt.preventDefault();
   }
+
+  // Step two: find the correct list using the appropriate category name
+    // Sometimes this may require repeating this step with different 
+    // category names until finding a list that contains the correct results
+    // (i.e. names of Presidents, or Asian countries) listed
+    // by page titles (not Category names), with correlated pageids
+    // Note: Add ability to dynamically choose list limit based on expected number of results
+  fromCategoryToPageids(evt) {
+    // var title = this.refs.title.value.split(" ");
+    // var listPageTitle = title.join("%20");
+    // var categoryTitle = '';
+    console.log("You Clicked Category Title: ", this.refs.category.innerHTML);
+    // fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=Category:${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
+    // .then(response => response.json())
+    // .then(
+    //   (result) => {
+    //     this.setState({
+    //       wikiList: result.query.categorymembers
+    //     });
+    //     console.log("List using Category Title: ", this.state.wikiList);
+    //   },
+    //   // Note: it's important to handle errors here
+    //   // instead of a catch() block so that we don't swallow
+    //   // exceptions from actual bugs in components.
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
+    evt.preventDefault();
+  }
   
   render() {
     
@@ -105,8 +113,10 @@ class App extends Component {
         </form>
         <div>
           <h3>Categories</h3>
-          <ul>
-            { this.state.wikiCategories.map((category, i) => <li key={i}>{category}</li>)}
+          <ul className="No-style-list">
+            { this.state.wikiCategories.map((category, i) => { 
+              return <div key={i} ><li ref='category' >{category}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
+            )}
           </ul>
         </div>
       </div>
