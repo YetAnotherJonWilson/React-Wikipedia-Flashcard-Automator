@@ -8,39 +8,13 @@ class App extends Component {
 
     this.state = {
       wikiCategories: [],
-      wikiList: '',
+      wikiList: [],
       wikiExtract: ''
     };
 
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
-    
-  }
-
-  componentDidMount() {
-    // temp values for testing
-    
-    // for step three
-    var pageids = 21490963;
-    
-    
-    // Step three: Use pageid's to get extracts in plaintext 
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=${pageids}&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2`)
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          wikiExtract: result.query.pages[0].extract
-        });
-        // console.log("Extract derived from pageid: ", this.state.wikiExtract);
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.fromPageidsToExtracts = this.fromPageidsToExtracts.bind(this);
   }
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
@@ -83,8 +57,10 @@ class App extends Component {
     .then(response => response.json())
     .then(
       (result) => {
+        var categoriesList = result.query.categorymembers;
+        var categoriesArray = categoriesList.map((category) => {return category.title});
         this.setState({
-          wikiList: result.query.categorymembers
+          wikiList: categoriesArray
         });
         console.log(this.state.wikiList);
       },
@@ -96,6 +72,28 @@ class App extends Component {
       }
     );
     evt.preventDefault();
+  }
+
+  // Step three: Use pageid's to get extracts in plaintext 
+  fromPageidsToExtracts(evt) {
+    var pageids = 21490963;
+
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=${pageids}&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2`)
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          wikiExtract: result.query.pages[0].extract
+        });
+        console.log("Extracts derived from pageids: ", this.state.wikiExtract);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   
   render() {
@@ -115,6 +113,14 @@ class App extends Component {
           <ul className="No-style-list">
             { this.state.wikiCategories.map((category, i) => { 
               return <div key={i} ><li>{category}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
+            )}
+          </ul>
+        </div>
+        <div>
+          <h3>List of Results</h3>
+          <ul className="No-style-list">
+            { this.state.wikiList.map((listItem, i) => { 
+              return <li key={i}>{listItem}</li>}
             )}
           </ul>
         </div>
