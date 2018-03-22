@@ -76,26 +76,25 @@ class App extends Component {
     // by page titles (not Category names), with correlated pageids
     // Note: Add ability to dynamically choose list limit based on expected number of results
   fromCategoryToPageids(evt) {
-    // var title = this.refs.title.value.split(" ");
-    // var listPageTitle = title.join("%20");
-    // var categoryTitle = '';
-    console.log("You Clicked Category Title: ", this.refs.category.innerHTML);
-    // fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=Category:${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
-    // .then(response => response.json())
-    // .then(
-    //   (result) => {
-    //     this.setState({
-    //       wikiList: result.query.categorymembers
-    //     });
-    //     console.log("List using Category Title: ", this.state.wikiList);
-    //   },
-    //   // Note: it's important to handle errors here
-    //   // instead of a catch() block so that we don't swallow
-    //   // exceptions from actual bugs in components.
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
+    var categoryTitlePlainText = evt.target.previousSibling.innerHTML;
+    var categoryTitle = categoryTitlePlainText.split(" ").join("%20");
+    
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          wikiList: result.query.categorymembers
+        });
+        console.log(this.state.wikiList);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        console.log(error);
+      }
+    );
     evt.preventDefault();
   }
   
@@ -115,7 +114,7 @@ class App extends Component {
           <h3>Categories</h3>
           <ul className="No-style-list">
             { this.state.wikiCategories.map((category, i) => { 
-              return <div key={i} ><li ref='category' >{category}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
+              return <div key={i} ><li>{category}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
             )}
           </ul>
         </div>
