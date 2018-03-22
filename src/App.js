@@ -7,7 +7,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      wikiCategories: '',
+      wikiCategories: [],
       wikiList: '',
       wikiExtract: ''
     };
@@ -18,30 +18,10 @@ class App extends Component {
 
   componentDidMount() {
     // temp values for testing
-    // for step one
-    var listPageTitle = 'List%20of%20Asian%20countries%20by%20GDP';
     // for step two
     var categoryTitle = 'Southeast%20Asian%20countries';
     // for step three
     var pageids = 21490963;
-
-    // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          wikiCategories: result.query.pages[0].categories
-        });
-        console.log("Categories: ", this.state.wikiCategories);
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        console.log(error);
-      }
-    );
     
     // Step two: find the correct list using the appropriate category name
     // Sometimes this may require repeating this step with different 
@@ -85,22 +65,21 @@ class App extends Component {
     );
   }
 
+  // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
   getCategories(evt) {
     var title = this.refs.title.value.split(" ");
-    var listPageTitle2 = title.join("%20");
+    var listPageTitle = title.join("%20");
 
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle2}&prop=categories&cllimit=max&format=json&formatversion=2`)
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
     .then(response => response.json())
     .then(
       (result) => {
         var categoriesList = result.query.pages[0].categories;
         var categoriesArray = categoriesList.map((category) => {return category.title});
-        // this.setState({
-        //   wikiCategories: result.query.pages[0].categories
-        // });
-        console.log("Categories: ", categoriesList);
-        console.log("typeof categoriesList: ", typeof(categoriesList));
-        console.log("categoriesArray: ", categoriesArray);
+        this.setState({
+          wikiCategories: categoriesArray
+        });
+        console.log("this.state.wikiCategories (categoriesArray): ", this.state.wikiCategories);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -126,9 +105,9 @@ class App extends Component {
         </form>
         <div>
           <h3>Categories</h3>
-          {/* <ul>
-            { this.state.wikiCategories.map((category, i) => <li key={i}>{category.title}</li>)}
-          </ul> */}
+          <ul>
+            { this.state.wikiCategories.map((category, i) => <li key={i}>{category}</li>)}
+          </ul>
         </div>
       </div>
     );
