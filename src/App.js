@@ -93,10 +93,14 @@ class App extends Component {
     .then(response => response.json())
     .then(
       (result) => {
-        this.setState({
-          wikiCategories: result.query.pages[0].categories
-        });
-        console.log("Categories: ", this.state.wikiCategories);
+        var categoriesList = result.query.pages[0].categories;
+        var categoriesArray = categoriesList.map((category) => {return category.title});
+        // this.setState({
+        //   wikiCategories: result.query.pages[0].categories
+        // });
+        console.log("Categories: ", categoriesList);
+        console.log("typeof categoriesList: ", typeof(categoriesList));
+        console.log("categoriesArray: ", categoriesArray);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -120,6 +124,12 @@ class App extends Component {
           <input type="text" name="Page-title" ref='title' /><br />
           <input type="submit" value="Submit" />
         </form>
+        <div>
+          <h3>Categories</h3>
+          {/* <ul>
+            { this.state.wikiCategories.map((category, i) => <li key={i}>{category.title}</li>)}
+          </ul> */}
+        </div>
       </div>
     );
   }
