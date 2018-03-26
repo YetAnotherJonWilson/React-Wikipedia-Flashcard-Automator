@@ -20,3 +20,11 @@
 .No-style-list {
   list-style-type: none;
 }
+
+#Categories-section {
+  display: none;
+}
+
+#List-of-results-section {
+  display: none;
+}

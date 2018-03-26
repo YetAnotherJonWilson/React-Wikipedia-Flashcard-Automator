@@ -40,6 +40,8 @@ class App extends Component {
         console.log(error);
       }
     );
+    document.getElementById("Categories-section").style.display = "block";
+    this.refs.title.value = '';
     evt.preventDefault();
   }
 
@@ -60,6 +62,7 @@ class App extends Component {
         var categoriesList = result.query.categorymembers;
         var categoriesArray = categoriesList.map((category) => {return category.title});
         this.setState({
+          wikiCategories: [],
           wikiList: categoriesArray
         });
         console.log(this.state.wikiList);
@@ -71,6 +74,8 @@ class App extends Component {
         console.log(error);
       }
     );
+    document.getElementById("Categories-section").style.display = "none";
+    document.getElementById("List-of-results-section").style.display = "block";
     evt.preventDefault();
   }
 
@@ -108,7 +113,7 @@ class App extends Component {
           <input type="text" name="Page-title" ref='title' /><br />
           <input type="submit" value="Submit" />
         </form>
-        <div>
+        <div id="Categories-section">
           <h3>Categories</h3>
           <ul className="No-style-list">
             { this.state.wikiCategories.map((category, i) => { 
@@ -116,7 +121,7 @@ class App extends Component {
             )}
           </ul>
         </div>
-        <div>
+        <div id="List-of-results-section" >
           <h3>List of Results</h3>
           <ul className="No-style-list">
             { this.state.wikiList.map((listItem, i) => { 
