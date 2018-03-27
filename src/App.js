@@ -26,7 +26,6 @@ class App extends Component {
     const fields = this.state.fields;
     fields[evt.target.name] = evt.target.value;
     this.setState({ fields });
-    console.log("this.state.fields: ", this.state.fields);
   }
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
@@ -39,6 +38,7 @@ class App extends Component {
     .then(
       (result) => {
         var categoriesList = result.query.pages[0].categories;
+        if(categoriesList === undefined) { return }
         var categoriesArray = categoriesList.map((category) => {return category.title});
         this.setState({
           wikiCategories: categoriesArray
