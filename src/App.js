@@ -7,25 +7,31 @@ class App extends Component {
     super(props);
 
     this.state = {
-      title: '',
+      fields: {
+        title: '',
+        resultsNumber: ''
+      },
       wikiCategories: [],
       wikiList: [],
       wikiExtract: ''
     };
 
-    this.onTitleChange = this.onTitleChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     this.fromPageidsToExtracts = this.fromPageidsToExtracts.bind(this);
   }
 
-  onTitleChange(evt) {
-    this.setState({ title: evt.target.value })
+  onInputChange(evt) {
+    const fields = this.state.fields;
+    fields[evt.target.name] = evt.target.value;
+    this.setState({ fields });
+    console.log("this.state.fields: ", this.state.fields);
   }
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
   getCategories(evt) {
-    var title = this.state.title.split(" ");
+    var title = this.state.fields.title.split(" ");
     var listPageTitle = title.join("%20");
 
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
@@ -47,7 +53,7 @@ class App extends Component {
       }
     );
     document.getElementById("Categories-section").style.display = "block";
-    this.setState({ title: ''});
+    this.setState({ fields: {title: '', resultsNumber: ''}});
     evt.preventDefault();
   }
 
@@ -116,7 +122,8 @@ class App extends Component {
         </header>
         <form onSubmit={this.getCategories}>
           Wikipedia page title: <br />
-          <input placeholder="Title" value={this.state.title} onChange={this.onTitleChange} /><br />
+          <input placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} /><br />
+          <input placeholder="Number of results to show" name= 'resultsNumber' value={this.state.fields.resultsNumber} onChange={this.onInputChange} /><br />
           <input type="submit" value="Submit" />
         </form>
         <div id="Categories-section">
