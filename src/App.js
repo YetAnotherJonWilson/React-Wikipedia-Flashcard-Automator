@@ -38,11 +38,17 @@ class App extends Component {
     .then(
       (result) => {
         var categoriesList = result.query.pages[0].categories;
-        if(categoriesList === undefined) { return }
+        if(categoriesList === undefined) { 
+          document.getElementById("Categories-section").style.display = "none";
+          document.getElementById("No-categories").style.display = "block";
+          return;
+        }
         var categoriesArray = categoriesList.map((category) => {return category.title});
         this.setState({
           wikiCategories: categoriesArray
         });
+        document.getElementById("No-categories").style.display = "none";
+        document.getElementById("Categories-section").style.display = "block";
         console.log("this.state.wikiCategories (categoriesArray): ", this.state.wikiCategories);
       },
       // Note: it's important to handle errors here
@@ -52,7 +58,7 @@ class App extends Component {
         console.log(error);
       }
     );
-    document.getElementById("Categories-section").style.display = "block";
+  
     this.setState({ fields: {title: '', resultsNumber: ''}});
     evt.preventDefault();
   }
@@ -126,6 +132,9 @@ class App extends Component {
           <input placeholder="Number of results to show" name= 'resultsNumber' value={this.state.fields.resultsNumber} onChange={this.onInputChange} /><br />
           <input type="submit" value="Submit" />
         </form>
+        <div id="No-categories">
+          <h2>No Results Found</h2>
+        </div>
         <div id="Categories-section">
           <h3>Categories</h3>
           <ul className="No-style-list">
