@@ -7,19 +7,25 @@ class App extends Component {
     super(props);
 
     this.state = {
+      title: '',
       wikiCategories: [],
       wikiList: [],
       wikiExtract: ''
     };
 
+    this.onTitleChange = this.onTitleChange.bind(this);
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     this.fromPageidsToExtracts = this.fromPageidsToExtracts.bind(this);
   }
 
+  onTitleChange(evt) {
+    this.setState({ title: evt.target.value })
+  }
+
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
   getCategories(evt) {
-    var title = this.refs.title.value.split(" ");
+    var title = this.state.title.split(" ");
     var listPageTitle = title.join("%20");
 
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
@@ -41,7 +47,7 @@ class App extends Component {
       }
     );
     document.getElementById("Categories-section").style.display = "block";
-    this.refs.title.value = '';
+    this.setState({ title: ''});
     evt.preventDefault();
   }
 
@@ -110,7 +116,7 @@ class App extends Component {
         </header>
         <form onSubmit={this.getCategories}>
           Wikipedia page title: <br />
-          <input type="text" name="Page-title" ref='title' /><br />
+          <input placeholder="Title" value={this.state.title} onChange={this.onTitleChange} /><br />
           <input type="submit" value="Submit" />
         </form>
         <div id="Categories-section">
