@@ -13,6 +13,8 @@ class App extends Component {
       },
       wikiCategories: [],
       wikiList: [],
+      wikiListTitles: [],
+      wikiListCategories: [],
       wikiExtract: ''
     };
 
@@ -79,9 +81,13 @@ class App extends Component {
       (result) => {
         var categoriesList = result.query.categorymembers;
         var categoriesArray = categoriesList.map((category) => {return category.title});
+        var wikiListTitles = categoriesArray.filter(category => !category.includes("Category"));
+        var wikiListCategories = categoriesArray.filter(category => category.includes("Category"));
         this.setState({
           wikiCategories: [],
-          wikiList: categoriesArray
+          wikiList: categoriesArray,
+          wikiListTitles: wikiListTitles,
+          wikiListCategories: wikiListCategories
         });
         console.log(this.state.wikiList);
       },
@@ -145,8 +151,15 @@ class App extends Component {
         </div>
         <div id="List-of-results-section" >
           <h3>List of Results</h3>
+          <h2>All Page Titles</h2>
           <ul className="No-style-list">
-            { this.state.wikiList.map((listItem, i) => { 
+            { this.state.wikiListTitles.map((listItem, i) => { 
+              return <li key={i}>{listItem}</li>}
+            )}
+          </ul>
+          <h2>All Categories</h2>
+          <ul className="No-style-list">
+            { this.state.wikiListCategories.map((listItem, i) => { 
               return <li key={i}>{listItem}</li>}
             )}
           </ul>
