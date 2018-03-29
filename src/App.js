@@ -12,7 +12,6 @@ class App extends Component {
         resultsNumber: ''
       },
       wikiCategories: [],
-      wikiList: [],
       wikiListTitles: [],
       wikiListCategories: [],
       wikiExtract: ''
@@ -85,11 +84,9 @@ class App extends Component {
         var wikiListCategories = categoriesArray.filter(category => category.includes("Category"));
         this.setState({
           wikiCategories: [],
-          wikiList: categoriesArray,
           wikiListTitles: wikiListTitles,
           wikiListCategories: wikiListCategories
         });
-        console.log(this.state.wikiList);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -160,7 +157,7 @@ class App extends Component {
           <h2>All Categories</h2>
           <ul className="No-style-list">
             { this.state.wikiListCategories.map((listItem, i) => { 
-              return <li key={i}>{listItem}</li>}
+              return <div><li key={i}>{listItem}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
             )}
           </ul>
         </div>
