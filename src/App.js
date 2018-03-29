@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Grid, Row, Col } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
@@ -49,8 +49,6 @@ class App extends Component {
         this.setState({
           wikiCategories: categoriesArray
         });
-        document.getElementById("No-categories").style.display = "none";
-        document.getElementById("Categories-section").style.display = "block";
         console.log("this.state.wikiCategories (categoriesArray): ", this.state.wikiCategories);
       },
       // Note: it's important to handle errors here
@@ -96,8 +94,6 @@ class App extends Component {
         console.log(error);
       }
     );
-    document.getElementById("Categories-section").style.display = "none";
-    document.getElementById("List-of-results-section").style.display = "block";
     evt.preventDefault();
   }
 
@@ -130,38 +126,42 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Wikipedia Flashcard Automator</h1>
         </header>
-        <form onSubmit={this.getCategories}>
-          Wikipedia page title: <br />
-          <input placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} /><br />
-          <input placeholder="Number of results to show" name= 'resultsNumber' value={this.state.fields.resultsNumber} onChange={this.onInputChange} /><br />
-          <input type="submit" value="Submit" />
-        </form>
-        <div id="No-categories">
-          <h2>No Results Found</h2>
-        </div>
-        <div id="Categories-section">
-          <h3>Categories</h3>
-          <ul className="No-style-list">
-            { this.state.wikiCategories.map((category, i) => { 
-              return <div key={i} ><li><Button bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
-            )}
-          </ul>
-        </div>
-        <div id="List-of-results-section" >
-          <h3>List of Results</h3>
-          <h2>All Page Titles</h2>
-          <ul className="No-style-list">
-            { this.state.wikiListTitles.map((listItem, i) => { 
-              return <li key={i}>{listItem}</li>}
-            )}
-          </ul>
-          <h2>All Categories</h2>
-          <ul className="No-style-list">
-            { this.state.wikiListCategories.map((listItem, i) => { 
-              return <div><li key={i}>{listItem}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
-            )}
-          </ul>
-        </div>
+        <Grid>
+          <Row>
+            <form onSubmit={this.getCategories}>
+              Wikipedia page title: <br />
+              <input placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} /><br />
+              <input placeholder="Number of results to show" name= 'resultsNumber' value={this.state.fields.resultsNumber} onChange={this.onInputChange} /><br />
+              <input type="submit" value="Submit" />
+            </form>
+          </Row>
+          <Row>
+            <Col md={4}>
+                <h3>Categories</h3>
+                <ul className="No-style-list">
+                  { this.state.wikiCategories.map((category, i) => { 
+                    return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
+                  )}
+                </ul>
+            </Col>
+            <Col md={4}>
+              <h2>All Page Titles</h2>
+              <ul className="No-style-list">
+                { this.state.wikiListTitles.map((listItem, i) => { 
+                  return <li key={i}>{listItem}</li>}
+                )}
+              </ul>
+            </Col>
+            <Col md={4}>
+              <h2>All Categories</h2>
+              <ul className="No-style-list">
+                { this.state.wikiListCategories.map((listItem, i) => { 
+                return <div><li key={i}><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{listItem}</Button></li></div>}
+                )}
+              </ul>
+            </Col>
+          </Row>
+        </Grid>
       </div>
     );
   }
