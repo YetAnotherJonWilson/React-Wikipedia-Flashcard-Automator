@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
@@ -71,7 +72,7 @@ class App extends Component {
     // by page titles (not Category names), with correlated pageids
     // Note: Add ability to dynamically choose list limit based on expected number of results
   fromCategoryToPageids(evt) {
-    var categoryTitlePlainText = evt.target.previousSibling.innerHTML;
+    var categoryTitlePlainText = evt.target.innerHTML;
     var categoryTitle = categoryTitlePlainText.split(" ").join("%20");
     
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
@@ -142,7 +143,7 @@ class App extends Component {
           <h3>Categories</h3>
           <ul className="No-style-list">
             { this.state.wikiCategories.map((category, i) => { 
-              return <div key={i} ><li>{category}</li><button onClick={this.fromCategoryToPageids} >Choose this one</button></div>}
+              return <div key={i} ><li><Button bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
             )}
           </ul>
         </div>
