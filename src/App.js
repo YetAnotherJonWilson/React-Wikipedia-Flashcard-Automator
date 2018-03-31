@@ -13,8 +13,8 @@ class App extends Component {
         resultsNumber: ''
       },
       wikiCategories: [],
-      wikiListTitles: [],
-      wikiListCategories: [],
+      wikiPageTitles: [],
+      wikiListofLists: [],
       wikiExtract: ''
     };
 
@@ -79,12 +79,14 @@ class App extends Component {
       (result) => {
         var categoriesList = result.query.categorymembers;
         var categoriesArray = categoriesList.map((category) => {return category.title});
-        var wikiListTitles = categoriesArray.filter(category => !category.includes("Category"));
-        var wikiListCategories = categoriesArray.filter(category => category.includes("Category"));
+        var wikiPageTitles = categoriesArray.filter(category => (!category.includes("Category") && !category.includes("List of") && !category.includes("Lists of")));
+        var wikiListCategories = categoriesArray.filter(category => (category.includes("Category") && !category.includes("Category:List")));
+        var wikiListofLists = categoriesArray.filter(category => (category.includes("List of") || category.includes("Lists of")));
+
         this.setState({
-          wikiCategories: [],
-          wikiListTitles: wikiListTitles,
-          wikiListCategories: wikiListCategories
+          wikiCategories: wikiListCategories,
+          wikiListofLists: wikiListofLists,
+          wikiPageTitles: wikiPageTitles
         });
       },
       // Note: it's important to handle errors here
@@ -137,7 +139,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col md={4}>
-                <h3>Categories</h3>
+                <h2>Categories</h2>
                 <ul className="No-style-list">
                   { this.state.wikiCategories.map((category, i) => { 
                     return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
@@ -145,18 +147,18 @@ class App extends Component {
                 </ul>
             </Col>
             <Col md={4}>
-              <h2>All Page Titles</h2>
+              <h2>Lists</h2>
               <ul className="No-style-list">
-                { this.state.wikiListTitles.map((listItem, i) => { 
-                  return <li key={i}>{listItem}</li>}
+              { this.state.wikiListofLists.map((listItem, i) => { 
+                return <div><li key={i}><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{listItem}</Button></li></div>}
                 )}
               </ul>
             </Col>
             <Col md={4}>
-              <h2>All Categories</h2>
+              <h2>Page Titles</h2>
               <ul className="No-style-list">
-                { this.state.wikiListCategories.map((listItem, i) => { 
-                return <div><li key={i}><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{listItem}</Button></li></div>}
+              { this.state.wikiPageTitles.map((listItem, i) => { 
+                  return <li key={i}>{listItem}</li>}
                 )}
               </ul>
             </Col>
