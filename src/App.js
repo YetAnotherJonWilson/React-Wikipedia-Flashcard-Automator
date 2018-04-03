@@ -41,8 +41,6 @@ class App extends Component {
       (result) => {
         var categoriesList = result.query.pages[0].categories;
         if(categoriesList === undefined) { 
-          document.getElementById("Categories-section").style.display = "none";
-          document.getElementById("No-categories").style.display = "block";
           return;
         }
         var categoriesArray = categoriesList.map((category) => {return category.title});
@@ -150,7 +148,7 @@ class App extends Component {
               <h2>Lists</h2>
               <ul className="No-style-list">
               { this.state.wikiListofLists.map((listItem, i) => { 
-                return <div><li key={i}><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{listItem}</Button></li></div>}
+                return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
                 )}
               </ul>
             </Col>
