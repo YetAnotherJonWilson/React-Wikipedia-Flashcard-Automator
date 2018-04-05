@@ -32,9 +32,13 @@ class App extends Component {
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
   getCategories(evt) {
-    var title = this.state.fields.title.split(" ");
-    var listPageTitle = title.join("%20");
-
+    if(evt.target.id === "button") {
+      var listTitle = evt.target.innerHTML.split(" ");
+      var listPageTitle = listTitle.join("%20");
+    } else {
+      var title = this.state.fields.title.split(" ");
+      listPageTitle = title.join("%20");
+    }
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
     .then(response => response.json())
     .then(
