@@ -15,7 +15,10 @@ class App extends Component {
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
-      wikiExtract: ''
+      wikiExtract: '',
+      searchResultsHeaders : {
+        visibility: 'hidden'
+      }
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -48,6 +51,10 @@ class App extends Component {
           return;
         }
         var categoriesArray = categoriesList.map((category) => {return category.title});
+        var x = document.querySelectorAll("h2");
+        x[0].style.visibility = 'visible';
+        x[1].style.visibility = 'visible';
+        x[2].style.visibility = 'visible';
         this.setState({
           wikiCategories: categoriesArray
         });
@@ -141,7 +148,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col md={4}>
-                <h2>Categories</h2>
+                <h2 style={{visibility: 'hidden'}}>Categories</h2>
                 <ul className="No-style-list">
                   { this.state.wikiCategories.map((category, i) => { 
                     return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
@@ -149,7 +156,7 @@ class App extends Component {
                 </ul>
             </Col>
             <Col md={4}>
-              <h2>Lists</h2>
+              <h2 style={{visibility: 'hidden'}}>Lists</h2>
               <ul className="No-style-list">
               { this.state.wikiListofLists.map((listItem, i) => { 
                 return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
@@ -157,7 +164,7 @@ class App extends Component {
               </ul>
             </Col>
             <Col md={4}>
-              <h2>Page Titles</h2>
+              <h2 style={{visibility: 'hidden'}}>Page Titles</h2>
               <ul className="No-style-list">
               { this.state.wikiPageTitles.map((listItem, i) => { 
                   return <li key={i}>{listItem}</li>}
