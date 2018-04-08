@@ -51,10 +51,7 @@ class App extends Component {
           return;
         }
         var categoriesArray = categoriesList.map((category) => {return category.title});
-        var x = document.querySelectorAll("h2");
-        x[0].style.visibility = 'visible';
-        x[1].style.visibility = 'visible';
-        x[2].style.visibility = 'visible';
+        document.querySelectorAll("h2").forEach(x => x.style.visibility = 'visible');
         this.setState({
           wikiCategories: categoriesArray
         });
