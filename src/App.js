@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Grid, Row, Col } from 'react-bootstrap';
+import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
@@ -9,8 +9,7 @@ class App extends Component {
 
     this.state = {
       fields: {
-        title: '',
-        resultsNumber: ''
+        title: ''
       },
       wikiCategories: [],
       wikiPageTitles: [],
@@ -65,7 +64,7 @@ class App extends Component {
       }
     );
   
-    this.setState({ fields: {title: '', resultsNumber: ''}});
+    this.setState({ fields: {title: ''}});
     evt.preventDefault();
   }
 
@@ -136,12 +135,16 @@ class App extends Component {
         </header>
         <Grid>
           <Row>
+            <Col md={4}></Col>
+            <Col md={3}>
             <form onSubmit={this.getCategories}>
-              Wikipedia page title: <br />
-              <input placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} /><br />
-              <input placeholder="Number of results to show" name= 'resultsNumber' value={this.state.fields.resultsNumber} onChange={this.onInputChange} /><br />
-              <input type="submit" value="Submit" />
+              <FormGroup>
+                <ControlLabel>Wikipedia page title:</ControlLabel>
+                <FormControl placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} />
+                <Button type="submit">Submit</Button>
+              </FormGroup>
             </form>
+            </Col>
           </Row>
           <Row>
             <Col md={4}>
