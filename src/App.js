@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CardButton from './CardButton';
 import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 import './App.css';
 
@@ -50,7 +51,7 @@ class App extends Component {
           return;
         }
         var categoriesArray = categoriesList.map((category) => {return category.title});
-        document.querySelectorAll("h2").forEach(x => x.style.visibility = 'visible');
+        document.querySelectorAll(".listHider").forEach(x => x.style.visibility = 'visible');
         this.setState({
           wikiCategories: categoriesArray
         });
@@ -148,7 +149,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col md={4}>
-                <h2 style={{visibility: 'hidden'}}>Categories</h2>
+                <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
                 <ul className="No-style-list">
                   { this.state.wikiCategories.map((category, i) => { 
                     return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
@@ -156,7 +157,7 @@ class App extends Component {
                 </ul>
             </Col>
             <Col md={4}>
-              <h2 style={{visibility: 'hidden'}}>Lists</h2>
+              <h2 className="listHider" style={{visibility: 'hidden'}}>Lists</h2>
               <ul className="No-style-list">
               { this.state.wikiListofLists.map((listItem, i) => { 
                 return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
@@ -164,7 +165,8 @@ class App extends Component {
               </ul>
             </Col>
             <Col md={4}>
-              <h2 style={{visibility: 'hidden'}}>Page Titles</h2>
+              <h2 className="listHider" style={{visibility: 'hidden'}}>Page Titles</h2>
+              <CardButton></CardButton>
               <ul className="No-style-list">
               { this.state.wikiPageTitles.map((listItem, i) => { 
                   return <li key={i}>{listItem}</li>}
