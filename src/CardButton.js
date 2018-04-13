@@ -13,7 +13,7 @@ class CardButton extends Component {
     render() {
         return (
             <div>
-                <Button className="listHider" style={{visibility: 'hidden'}} bsStyle='primary'>Create Flashcards from this List</Button>
+                <Button className="otherListHider" style={{visibility: 'hidden'}} bsStyle='primary'>Create Flashcards from this List</Button>
             </div>
         )
           

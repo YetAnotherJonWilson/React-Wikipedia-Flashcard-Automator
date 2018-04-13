@@ -88,6 +88,7 @@ class App extends Component {
         var wikiPageTitles = categoriesArray.filter(category => (!category.includes("Category") && !category.includes("List of") && !category.includes("Lists of")));
         var wikiListCategories = categoriesArray.filter(category => (category.includes("Category") && !category.includes("Category:List")));
         var wikiListofLists = categoriesArray.filter(category => (category.includes("List of") || category.includes("Lists of")));
+        document.querySelectorAll(".otherListHider").forEach(x => x.style.visibility = 'visible');
 
         this.setState({
           wikiCategories: wikiListCategories,
@@ -157,7 +158,7 @@ class App extends Component {
                 </ul>
             </Col>
             <Col md={4}>
-              <h2 className="listHider" style={{visibility: 'hidden'}}>Lists</h2>
+              <h2 className="otherListHider" style={{visibility: 'hidden'}}>Lists</h2>
               <ul className="No-style-list">
               { this.state.wikiListofLists.map((listItem, i) => { 
                 return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
@@ -165,7 +166,7 @@ class App extends Component {
               </ul>
             </Col>
             <Col md={4}>
-              <h2 className="listHider" style={{visibility: 'hidden'}}>Page Titles</h2>
+              <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
               <CardButton></CardButton>
               <ul className="No-style-list">
               { this.state.wikiPageTitles.map((listItem, i) => { 
