@@ -89,7 +89,7 @@ class App extends Component {
         var wikiListCategories = categoriesArray.filter(category => (category.includes("Category") && !category.includes("Category:List")));
         var wikiListofLists = categoriesArray.filter(category => (category.includes("List of") || category.includes("Lists of")));
         document.querySelectorAll(".otherListHider").forEach(x => x.style.visibility = 'visible');
-
+        if(wikiPageTitles[0]){document.querySelector(".cardButton").style.visibility = 'visible'};
         this.setState({
           wikiCategories: wikiListCategories,
           wikiListofLists: wikiListofLists,
