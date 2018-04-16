@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
-import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
@@ -132,9 +132,13 @@ class App extends Component {
     
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Wikipedia Flashcard Automator</h1>
-        </header>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              Wikipedia Flashcard Automator
+            </Navbar.Brand>
+          </Navbar.Header>
+        </Navbar>
         <Grid>
           <Row>
             <Col md={4}></Col>
