@@ -8,12 +8,20 @@ class CardButton extends Component {
         this.state = {
             
         };
-    
+        this.createCards = this.createCards.bind(this);
       }
+
+    
+
+    createCards(evt){
+        console.clear();
+        console.log("List: ", this.props.list);
+    }
+
     render() {
         return (
             <div>
-                <Button className="cardButton" style={{visibility: 'hidden'}} bsStyle='primary'>Create Flashcards from this List</Button>
+                <Button className="cardButton" style={{visibility: 'hidden'}} bsStyle='primary' onClick={this.createCards} >Create Flashcards from this List</Button>
             </div>
         )
           
