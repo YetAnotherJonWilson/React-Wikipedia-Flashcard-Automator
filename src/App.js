@@ -24,7 +24,6 @@ class App extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
-    this.fromPageidsToExtracts = this.fromPageidsToExtracts.bind(this);
   }
 
   onInputChange(evt) {
@@ -104,28 +103,6 @@ class App extends Component {
       }
     );
     evt.preventDefault();
-  }
-
-  // Step three: Use pageid's to get extracts in plaintext 
-  fromPageidsToExtracts(evt) {
-    var pageids = 21490963;
-
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&pageids=${pageids}&prop=extracts&exintro=true&explaintext=true&format=json&formatversion=2`)
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          wikiExtract: result.query.pages[0].extract
-        });
-        console.log("Extracts derived from pageids: ", this.state.wikiExtract);
-      },
-      // Note: it's important to handle errors here
-      // instead of a catch() block so that we don't swallow
-      // exceptions from actual bugs in components.
-      (error) => {
-        console.log(error);
-      }
-    );
   }
   
   render() {
