@@ -15,15 +15,18 @@ class CardButton extends Component {
   createCards(evt) {
     console.clear();
     console.log(this.props.list);
-    var testTitle = '';
+    var testTitle = [];
     this.props.list.forEach(title => {
-        testTitle = title;
-        fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${testTitle}&prop=extracts&exintro=true&format=json&formatversion=2`)
+        testTitle.push(title);
+    });
+    var testTitles = testTitle.join("|");
+    console.log(testTitles);
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${testTitles}&prop=extracts&exintro=true&format=json&formatversion=2`)
         .then(response => response.json())
         .then(
         (result) => {
             this.setState({
-            wikiExtract: this.state.wikiExtract + result.query.pages[0].extract
+            wikiExtract: result.query.pages
             });
             console.log("Extracts derived from titles: ", this.state.wikiExtract);
         },
@@ -34,7 +37,6 @@ class CardButton extends Component {
             console.log(error);
         }
         );
-    });
   }
 
     render() {
