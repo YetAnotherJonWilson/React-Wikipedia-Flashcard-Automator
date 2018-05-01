@@ -35,10 +35,11 @@ class CardButton extends Component {
             .then(
             (result) => {
                 wikiExtract.push(result.query.pages);
-                // this.setState({
-                // wikiExtract: result.query.pages
-                // });
-                console.log("Extracts derived from titles: ", wikiExtract);
+                this.setState({
+                wikiExtract: wikiExtract
+                });
+                // console.clear();
+                // console.log("Extracts derived from titles: ", this.state.wikiExtract);
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
@@ -48,7 +49,23 @@ class CardButton extends Component {
             }
             );
         }
-    })
+    });
+  }
+
+  componentDidUpdate() {
+    // console.log("Extracts derived from titles: ", this.state.wikiExtract);
+    var extracts = this.state.wikiExtract;
+    
+    function myFunction() {
+        if(extracts.length > 1 && Array.isArray(extracts[extracts.length - 1]) ) {
+            extracts = extracts[0].concat(extracts[1]).concat(extracts[2]);
+        }
+        console.log("Extracts derived from titles: ", extracts);
+    }
+    if(this.state.wikiExtract !== undefined && this.state.wikiExtract.length !== 0) {
+        setTimeout(myFunction, 500);
+    }
+
   }
 
     render() {

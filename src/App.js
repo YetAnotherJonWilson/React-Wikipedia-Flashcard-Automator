@@ -41,6 +41,12 @@ class App extends Component {
       var title = this.state.fields.title.split(" ");
       listPageTitle = title.join("%20");
     }
+    if(listPageTitle === ''){
+      this.setState({
+        fields: {title: "Please enter a title"}
+      })
+      return;
+    }
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
     .then(response => response.json())
     .then(
