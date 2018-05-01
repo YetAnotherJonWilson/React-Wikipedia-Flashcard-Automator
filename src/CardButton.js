@@ -19,12 +19,11 @@ class CardButton extends Component {
     this.props.list.forEach(title => {
         pageTitles.push(title);
     });
-    var pageTitlesArray1 = pageTitles.slice(0, 19);
-    var pageTitlesArray2 = pageTitles.slice(20, 39);
-    var pageTitlesArray3 = pageTitles.slice(40, 59);
-    var pageTitlesArray4 = pageTitles.slice(60, 79);
+    var n = Math.ceil(pageTitles.length/20);
     var pageTitlesArray = [];
-    pageTitlesArray.push(pageTitlesArray1, pageTitlesArray2, pageTitlesArray3, pageTitlesArray4);
+    for(var i = 0; i < n; i++) {
+        pageTitlesArray.push(pageTitles.splice(0, 19));
+    }
     
     var wikiExtract = [];
     pageTitlesArray.forEach((x, i) => {
@@ -38,8 +37,6 @@ class CardButton extends Component {
                 this.setState({
                 wikiExtract: wikiExtract
                 });
-                // console.clear();
-                // console.log("Extracts derived from titles: ", this.state.wikiExtract);
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
@@ -52,20 +49,18 @@ class CardButton extends Component {
     });
   }
 
-  componentDidUpdate() {
-    // console.log("Extracts derived from titles: ", this.state.wikiExtract);
+  componentWillUpdate() {
     var extracts = this.state.wikiExtract;
     
-    function myFunction() {
-        if(extracts.length > 1 && Array.isArray(extracts[extracts.length - 1]) ) {
-            extracts = extracts[0].concat(extracts[1]).concat(extracts[2]);
-        }
-        console.log("Extracts derived from titles: ", extracts);
-    }
     if(this.state.wikiExtract !== undefined && this.state.wikiExtract.length !== 0) {
-        setTimeout(myFunction, 500);
+        if(extracts.length > 1 && Array.isArray(extracts[extracts.length - 1]) ) {
+            var cardItems = [];
+            extracts.forEach((x, i) => {
+                cardItems = cardItems.concat(extracts[i]);
+            })
+        }
+        console.log("Extracts derived from titles: ", cardItems);
     }
-
   }
 
     render() {
