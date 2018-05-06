@@ -6,7 +6,8 @@ class CardButton extends Component {
         super(props);
     
         this.state = {
-            wikiExtract: ''
+            wikiExtract: '',
+            cards: []
         };
         this.createCards = this.createCards.bind(this);
       }
@@ -59,14 +60,18 @@ class CardButton extends Component {
                 cardItems = cardItems.concat(extracts[i]);
             })
         }
-        console.log("Extracts derived from titles: ", cardItems);
     }
+    this.setState({cards: cardItems})
+    
   }
 
     render() {
         return (
             <div>
                 <Button className="cardButton" style={{visibility: 'hidden'}} bsStyle='primary' onClick={this.createCards} >Create Flashcards from this List</Button>
+                <ul>{this.state.cards.map((x, i) => { 
+                return <li key={i}>{x.title}</li>}
+                )}</ul>
             </div>
         )
           
