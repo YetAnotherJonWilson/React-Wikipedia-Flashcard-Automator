@@ -15,7 +15,6 @@ class App extends Component {
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
-      wikiExtract: '',
       searchResultsHeaders : {
         visibility: 'hidden'
       }
@@ -154,7 +153,7 @@ class App extends Component {
             </Col>
             <Col md={4}>
               <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
-              <CardButton list={this.state.wikiPageTitles}></CardButton>
+              <CardButton list={this.state.wikiPageTitles} wikiExtract={this.state.wikiExtract}></CardButton>
               <ul className="No-style-list">
               { this.state.wikiPageTitles.map((listItem, i) => { 
                   return <li key={i}>{listItem}</li>}
