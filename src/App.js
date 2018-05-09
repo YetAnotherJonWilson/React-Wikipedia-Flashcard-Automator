@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
 import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar } from 'react-bootstrap';
+import{ BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
@@ -114,54 +115,60 @@ class App extends Component {
     
     return (
       <div className="App">
-        <Navbar>
-          <Navbar.Header>
-            <Navbar.Brand>
-              Wikipedia Flashcard Automator
-            </Navbar.Brand>
-          </Navbar.Header>
-        </Navbar>
-        <Grid>
-          <Row>
-            <Col md={4}></Col>
-            <Col md={3}>
-            <form onSubmit={this.getCategories}>
-              <FormGroup>
-                <ControlLabel>Wikipedia page title:</ControlLabel>
-                <FormControl placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} />
-                <Button type="submit">Submit</Button>
-              </FormGroup>
-            </form>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={4}>
-                <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
+          <Navbar>
+            <Navbar.Header>
+              <Navbar.Brand>
+                Wikipedia Flashcard Automator
+              </Navbar.Brand>
+            </Navbar.Header>
+          </Navbar>
+          <Router>
+          <Grid>
+            <Row>
+              <Col md={4}></Col>
+              <Col md={3}>
+              <form onSubmit={this.getCategories}>
+                <FormGroup>
+                  <ControlLabel>Wikipedia page title:</ControlLabel>
+                  <FormControl placeholder="Title" name= 'title' value={this.state.fields.title} onChange={this.onInputChange} />
+                  <Button type="submit">Submit</Button>
+                </FormGroup>
+              </form>
+              </Col>
+            </Row>
+            <Row>
+            <Route exact={true} path="/" render={(props) => (
+              <div>
+              <Col md={4}>
+                  <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
+                  <ul className="No-style-list">
+                    { this.state.wikiCategories.map((category, i) => { 
+                      return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
+                    )}
+                  </ul>
+              </Col>
+              <Col md={4}>
+                <h2 className="otherListHider" style={{visibility: 'hidden'}}>Lists</h2>
                 <ul className="No-style-list">
-                  { this.state.wikiCategories.map((category, i) => { 
-                    return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
+                { this.state.wikiListofLists.map((listItem, i) => { 
+                  return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
                   )}
                 </ul>
-            </Col>
-            <Col md={4}>
-              <h2 className="otherListHider" style={{visibility: 'hidden'}}>Lists</h2>
-              <ul className="No-style-list">
-              { this.state.wikiListofLists.map((listItem, i) => { 
-                return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
-                )}
-              </ul>
-            </Col>
-            <Col md={4}>
-              <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
-              <CardButton list={this.state.wikiPageTitles}></CardButton>
-              <ul className="No-style-list">
-              { this.state.wikiPageTitles.map((listItem, i) => { 
-                  return <li key={i}>{listItem}</li>}
-                )}
-              </ul>
-            </Col>
-          </Row>
-        </Grid>
+              </Col>
+              <Col md={4}>
+                <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
+                <CardButton list={this.state.wikiPageTitles}></CardButton>
+                <ul className="No-style-list">
+                { this.state.wikiPageTitles.map((listItem, i) => { 
+                    return <li key={i}>{listItem}</li>}
+                  )}
+                </ul>
+              </Col>
+              </div>
+            )}></Route>
+            </Row>
+          </Grid>
+        </Router>  
       </div>
     );
   }
