@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import{ BrowserRouter as Router, Route } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 
 class CardButton extends Component {
@@ -34,6 +35,7 @@ class CardButton extends Component {
                 extracts = extracts.concat(result.query.pages);
                 if(extracts.length === this.props.list.length) {
                     this.setState({cardItems: extracts});
+                    window.location.href = '/cards';
             }
             },
             // Note: it's important to handle errors here
@@ -51,9 +53,14 @@ class CardButton extends Component {
         return (
             <div>
                 <Button className="cardButton" style={{visibility: 'hidden'}} bsStyle='primary' onClick={this.createCards} >Create Flashcards from this List</Button>
-                <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
-                return <li key={i}>{x.title}</li>}
-                )}</ul>
+                <Router>
+                    <Route exact path="/cards">
+                        <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
+                            return <li key={i}>{x.title}</li>}
+                            )}
+                        </ul>
+                    </Route>
+                </Router>
             </div>
         )
           
