@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
 import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar } from 'react-bootstrap';
-import{ BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 
 class App extends Component {
@@ -160,7 +159,6 @@ class App extends Component {
               </Navbar.Brand>
             </Navbar.Header>
           </Navbar>
-          <Router>
           <Grid>
             <Row>
               <Col md={4}></Col>
@@ -175,7 +173,7 @@ class App extends Component {
               </Col>
             </Row>
             <Row>
-            <Route exact={true} path="/" render={(props) => (
+            { this.state.cardItems.length < 1 &&
               <div>
               <Col md={4}>
                   <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
@@ -203,14 +201,13 @@ class App extends Component {
                 </ul>
               </Col>
               </div>
-            )}></Route>
+            }
               <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
                 return <li key={i}>{x.title}</li>}
                 )}
               </ul>
             </Row>
           </Grid>
-        </Router>  
       </div>
     );
   }
