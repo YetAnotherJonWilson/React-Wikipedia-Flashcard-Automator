@@ -16,6 +16,7 @@ class App extends Component {
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
+      cardItems: [],
       searchResultsHeaders : {
         visibility: 'hidden'
       }
@@ -24,6 +25,7 @@ class App extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
+    this.createCards = this.createCards.bind(this);
   }
 
   onInputChange(evt) {
@@ -110,6 +112,42 @@ class App extends Component {
     );
     evt.preventDefault();
   }
+
+    // Step three: Use pageid's to get extracts in plaintext 
+    createCards(evt) {
+      var pageTitles = [];
+      this.state.wikiPageTitles.forEach(title => {
+          pageTitles.push(title);
+      });
+      var n = Math.ceil(pageTitles.length/20);
+      var pageTitlesArray = [];
+      for(var i = 0; i < n; i++) {
+          pageTitlesArray.push(pageTitles.splice(0, 19));
+      }
+      var extracts = [];
+      pageTitlesArray.forEach((x, i) => {
+          if(x !== undefined && x.length !== 0) {
+              var titles = x.join("|");    
+              fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`)
+              .then(response => response.json())
+              .then(
+              (result) => {
+                  extracts = extracts.concat(result.query.pages);
+                  if(extracts.length === this.state.wikiPageTitles.length) {
+                      this.setState({cardItems: extracts});
+                      // window.location.href = '/cards';
+              }
+              },
+              // Note: it's important to handle errors here
+              // instead of a catch() block so that we don't swallow
+              // exceptions from actual bugs in components.
+              (error) => {
+                  console.log(error);
+              }
+              );
+          }
+      });
+    }
   
   render() {
     
@@ -157,15 +195,19 @@ class App extends Component {
               </Col>
               <Col md={4}>
                 <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
-                <CardButton list={this.state.wikiPageTitles} ></CardButton>
+                <CardButton createCards={this.createCards} ></CardButton>
                 <ul className="No-style-list">
-                { this.state.wikiPageTitles.map((listItem, i) => { 
-                    return <li key={i}>{listItem}</li>}
-                  )}
+                { this.state.wikiPageTitles.map((title, i) => { 
+                  return <div key={i}><li>{title}</li></div>}
+                )}
                 </ul>
               </Col>
               </div>
             )}></Route>
+              <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
+                return <li key={i}>{x.title}</li>}
+                )}
+              </ul>
             </Row>
           </Grid>
         </Router>  
