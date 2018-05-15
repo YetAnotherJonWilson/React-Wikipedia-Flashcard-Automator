@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
-import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar } from 'react-bootstrap';
+import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar, ListGroup, ListGroupItem } from 'react-bootstrap';
 import './App.css';
 
 class App extends Component {
@@ -177,32 +177,31 @@ class App extends Component {
               <div>
               <Col md={4}>
                   <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
-                  <ul className="No-style-list">
-                    { this.state.wikiCategories.map((category, i) => { 
-                      return <div key={i} ><li><Button id="button" bsStyle="primary" onClick={this.fromCategoryToPageids}>{category}</Button></li></div>}
-                    )}
-                  </ul>
+                  <ListGroup>
+                  { this.state.wikiCategories.map((category, i) => { 
+                      return <ListGroupItem key={i} id="button" onClick={this.fromCategoryToPageids}>{category}</ListGroupItem>}
+                  )}
+                  </ListGroup>
               </Col>
               <Col md={4}>
                 <h2 className="otherListHider" style={{visibility: 'hidden'}}>Lists</h2>
-                <ul className="No-style-list">
+                <ListGroup>
                 { this.state.wikiListofLists.map((listItem, i) => { 
-                  return <div key={i}><li><Button id="button" bsStyle="primary" onClick={this.getCategories}>{listItem}</Button></li></div>}
+                  return <ListGroupItem key={i} id="button" onClick={this.getCategories}>{listItem}</ListGroupItem>}
                   )}
-                </ul>
+                </ListGroup>
               </Col>
               <Col md={4}>
                 <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
-                <CardButton createCards={this.createCards} ></CardButton>
-                <ul className="No-style-list">
+                <CardButton id="button" createCards={this.createCards} ></CardButton>
+                <ListGroup>
                 { this.state.wikiPageTitles.map((title, i) => { 
-                  return <div key={i}><li>{title}</li></div>}
+                  return <ListGroupItem key={i}>{title}</ListGroupItem>}
                 )}
-                </ul>
+                </ListGroup>
               </Col>
               </div>
-            }
-              <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
+             }             <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
                 return <li key={i}>{x.title}</li>}
                 )}
               </ul>
