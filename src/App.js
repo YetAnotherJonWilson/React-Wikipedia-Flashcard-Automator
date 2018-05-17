@@ -27,6 +27,15 @@ class App extends Component {
     this.createCards = this.createCards.bind(this);
   }
 
+  componentWillMount() {
+    const cache = localStorage.getItem('cardItems');
+    if (cache) {
+      console.log(JSON.parse(cache));
+      // this.setState({ cardItems: JSON.parse(cache) });
+      return;
+    }
+  }
+
   onInputChange(evt) {
     const fields = this.state.fields;
     fields[evt.target.name] = evt.target.value;
@@ -134,7 +143,8 @@ class App extends Component {
                   extracts = extracts.concat(result.query.pages);
                   if(extracts.length === this.state.wikiPageTitles.length) {
                       this.setState({cardItems: extracts});
-                      // window.location.href = '/cards';
+                      console.log("extracts ", extracts);
+                      localStorage.setItem('cardItems', JSON.stringify(extracts));
               }
               },
               // Note: it's important to handle errors here
