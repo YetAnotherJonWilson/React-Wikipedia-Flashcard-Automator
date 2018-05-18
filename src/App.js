@@ -146,7 +146,9 @@ class App extends Component {
                   extracts = extracts.concat(result.query.pages);
                   if(extracts.length === this.state.wikiPageTitles.length) {
                       this.setState({cardItems: extracts});
-                      console.log("extracts ", extracts);
+                      var deckTitle = {"title": this.state.listTitle}
+                      extracts.unshift(deckTitle);
+                      console.log("extracts", JSON.stringify(extracts));
                       localStorage.setItem('cardItems', JSON.stringify(extracts));
               }
               },
