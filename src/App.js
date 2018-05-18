@@ -12,6 +12,7 @@ class App extends Component {
       fields: {
         title: ''
       },
+      listTitle: '',
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
@@ -93,6 +94,7 @@ class App extends Component {
   fromCategoryToPageids(evt) {
     var categoryTitlePlainText = evt.target.innerHTML;
     var categoryTitle = categoryTitlePlainText.split(" ").join("%20");
+    var correctCategoryTitle = categoryTitlePlainText.replace('Category:', '');
     
     fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
     .then(response => response.json())
@@ -106,6 +108,7 @@ class App extends Component {
         document.querySelectorAll(".otherListHider").forEach(x => x.style.visibility = 'visible');
         if(wikiPageTitles[0]){document.querySelector(".cardButton").style.visibility = 'visible'};
         this.setState({
+          listTitle: correctCategoryTitle,
           wikiCategories: wikiListCategories,
           wikiListofLists: wikiListofLists,
           wikiPageTitles: wikiPageTitles
@@ -204,6 +207,7 @@ class App extends Component {
               <Col md={4}>
                 <h2 className="otherListHider" style={{visibility: 'hidden'}}>Page Titles</h2>
                 <CardButton id="button" createCards={this.createCards} ></CardButton>
+                <h4 className="otherListHider" style={{visibility: 'hidden'}}>List Title: {this.state.listTitle}</h4>
                 <ListGroup>
                 { this.state.wikiPageTitles.map((title, i) => { 
                   return <ListGroupItem key={i}>{title}</ListGroupItem>}
