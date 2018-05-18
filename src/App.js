@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
 import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar, ListGroup, ListGroupItem } from 'react-bootstrap';
+import SimpleStorage from 'react-simple-storage';
 import './App.css';
 
 class App extends Component {
@@ -29,12 +30,31 @@ class App extends Component {
   }
 
   componentWillMount() {
-    const cache = localStorage.getItem('cardItems');
-    if (cache) {
-      console.log(JSON.parse(cache));
-      // this.setState({ cardItems: JSON.parse(cache) });
-      return;
-    }
+    window.addEventListener(
+      "beforeunload",
+      this.saveStateToLocalStorage.bind(this)
+    );
+  //   const cache = localStorage.getItem('cardItems');
+  //   if (cache) {
+  //     console.log(JSON.parse(cache));
+  //     // this.setState({ cardItems: JSON.parse(cache) });
+  //     return;
+  //   }
+  }
+
+  saveStateToLocalStorage() {
+    this.setState({
+      fields: {
+        title: ''
+      },
+      listTitle: '',
+      wikiCategories: [],
+      wikiPageTitles: [],
+      wikiListofLists: [],
+      searchResultsHeaders : {
+        visibility: 'hidden'
+      }
+    });
   }
 
   onInputChange(evt) {
@@ -145,11 +165,9 @@ class App extends Component {
               (result) => {
                   extracts = extracts.concat(result.query.pages);
                   if(extracts.length === this.state.wikiPageTitles.length) {
-                      this.setState({cardItems: extracts});
                       var deckTitle = {"title": this.state.listTitle}
                       extracts.unshift(deckTitle);
-                      console.log("extracts", JSON.stringify(extracts));
-                      localStorage.setItem('cardItems', JSON.stringify(extracts));
+                      this.setState({cardItems: extracts});
               }
               },
               // Note: it's important to handle errors here
@@ -162,11 +180,28 @@ class App extends Component {
           }
       });
     }
+
+    componentWillUnmount() {
+      this.setState({
+        fields: {
+          title: ''
+        },
+        listTitle: '',
+        wikiCategories: [],
+        wikiPageTitles: [],
+        wikiListofLists: [],
+        searchResultsHeaders : {
+          visibility: 'hidden'
+        }
+      })
+    }
   
   render() {
     
     return (
       <div className="App">
+          {/* Simple Storage handles localstorage */}
+          <SimpleStorage parent={this} />
           <Navbar>
             <Navbar.Header>
               <Navbar.Brand>
@@ -188,7 +223,6 @@ class App extends Component {
               </Col>
             </Row>
             <Row>
-            { this.state.cardItems.length < 1 &&
               <div>
               <Col md={4}>
                   <h2 className="listHider" style={{visibility: 'hidden'}}>Categories</h2>
@@ -217,10 +251,10 @@ class App extends Component {
                 </ListGroup>
               </Col>
               </div>
-             }             <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
+              {/* <ul className="No-style-list">{this.state.cardItems.map((x, i) => { 
                 return <li key={i}>{x.title}</li>}
                 )}
-              </ul>
+              </ul> */}
             </Row>
           </Grid>
       </div>
