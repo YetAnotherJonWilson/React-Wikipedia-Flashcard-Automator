@@ -174,8 +174,14 @@ class App extends Component {
             );
         }
       });
-      resolve();
+      resolve(extracts);
       reject(new Error('Wiki API fetch failed.'));
+    });
+
+    fetchWiki().then((extracts) => {
+      var deckTitle = {'title': this.state.listTitle};
+      extracts.unshift(deckTitle);
+      this.setState({cardItems: extracts});
     });
   }
 
