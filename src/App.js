@@ -156,29 +156,27 @@ class App extends Component {
     }
     var fetchWiki = new Promise((resolve, reject) => {
       var extracts = [];
-      pageTitlesArray.forEach((x, i) => {
-        if (x !== undefined && x.length !== 0) {
-          var titles = x.join('|');
+      pageTitlesArray.forEach((x, i, a) => {
+        var titles = x.join('|');
         fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`) // eslint-disable-line
-            .then(response => response.json())
-            .then(
-              (result) => {
-                extracts = extracts.concat(result.query.pages);
-              },
-              // Note: it's important to handle errors here
-              // instead of a catch() block so that we don't swallow
-              // exceptions from actual bugs in components.
-              (error) => {
-                console.log(error);
+          .then(response => response.json())
+          .then(
+            (result) => {
+              extracts = extracts.concat(result.query.pages);
+              console.log(extracts.length, this.state.wikiPageTitles.length);
+              if (extracts.length === this.state.wikiPageTitles.length) {
+                resolve(extracts);
               }
-            );
-        }
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       });
-      resolve(extracts);
-      reject(new Error('Wiki API fetch failed.'));
     });
 
-    fetchWiki().then((extracts) => {
+    fetchWiki.then((extracts) => {
+      console.log('extracts', extracts);
       var deckTitle = {'title': this.state.listTitle};
       extracts.unshift(deckTitle);
       this.setState({cardItems: extracts});
