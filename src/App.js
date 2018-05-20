@@ -77,7 +77,7 @@ class App extends Component {
       });
       return;
     }
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`)
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`) // eslint-disable-line
       .then(response => response.json())
       .then(
         (result) => {
@@ -86,7 +86,7 @@ class App extends Component {
             return;
           }
           var categoriesArray = categoriesList.map((category) => { return category.title; });
-          document.querySelectorAll('.listHider').forEach(x => x.style.visibility = 'visible');
+          document.querySelectorAll('.listHider').forEach(x => x.style.visibility = 'visible'); // eslint-disable-line
           this.setState({
             wikiCategories: categoriesArray
           });
@@ -115,7 +115,7 @@ class App extends Component {
     var categoryTitle = categoryTitlePlainText.split(' ').join('%20');
     var correctCategoryTitle = categoryTitlePlainText.replace('Category:', '');
 
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`)
+    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`) // eslint-disable-line
       .then(response => response.json())
       .then(
         (result) => {
@@ -124,7 +124,7 @@ class App extends Component {
           var wikiPageTitles = categoriesArray.filter(category => (!category.includes('Category') && !category.includes('List of') && !category.includes('Lists of')));
           var wikiListCategories = categoriesArray.filter(category => (category.includes('Category') && !category.includes('Category:List')));
           var wikiListofLists = categoriesArray.filter(category => (category.includes('List of') || category.includes('Lists of')));
-          document.querySelectorAll('.otherListHider').forEach(x => x.style.visibility = 'visible');
+          document.querySelectorAll('.otherListHider').forEach(x => x.style.visibility = 'visible'); // eslint-disable-line
           if (wikiPageTitles[0]) { document.querySelector('.cardButton').style.visibility = 'visible'; }
           this.setState({
             listTitle: correctCategoryTitle,
@@ -154,29 +154,28 @@ class App extends Component {
     for (var i = 0; i < n; i++) {
       pageTitlesArray.push(pageTitles.splice(0, 19));
     }
-    var extracts = [];
-    pageTitlesArray.forEach((x, i) => {
-      if (x !== undefined && x.length !== 0) {
-        var titles = x.join('|');
-        fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`)
-          .then(response => response.json())
-          .then(
-            (result) => {
-              extracts = extracts.concat(result.query.pages);
-              if (extracts.length === this.state.wikiPageTitles.length) {
-                var deckTitle = {'title': this.state.listTitle};
-                extracts.unshift(deckTitle);
-                this.setState({cardItems: extracts});
+    var fetchWiki = new Promise((resolve, reject) => {
+      var extracts = [];
+      pageTitlesArray.forEach((x, i) => {
+        if (x !== undefined && x.length !== 0) {
+          var titles = x.join('|');
+        fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`) // eslint-disable-line
+            .then(response => response.json())
+            .then(
+              (result) => {
+                extracts = extracts.concat(result.query.pages);
+              },
+              // Note: it's important to handle errors here
+              // instead of a catch() block so that we don't swallow
+              // exceptions from actual bugs in components.
+              (error) => {
+                console.log(error);
               }
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-              console.log(error);
-            }
-          );
-      }
+            );
+        }
+      });
+      resolve();
+      reject(new Error('Wiki API fetch failed.'));
     });
   }
 
