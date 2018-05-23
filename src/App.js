@@ -9,6 +9,8 @@ import {
   ControlLabel,
   FormControl,
   Navbar,
+  Nav,
+  NavItem,
   ListGroup,
   ListGroupItem
 } from 'react-bootstrap';
@@ -23,6 +25,7 @@ class App extends Component {
       fields: {
         title: ''
       },
+      searchPage: true,
       listTitle: '',
       wikiCategories: [],
       wikiPageTitles: [],
@@ -37,6 +40,7 @@ class App extends Component {
     this.getCategories = this.getCategories.bind(this);
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     this.createCards = this.createCards.bind(this);
+    this.toggleView = this.toggleView.bind(this);
   }
 
   componentWillMount() {
@@ -51,6 +55,7 @@ class App extends Component {
       fields: {
         title: ''
       },
+      searchPage: true,
       listTitle: '',
       wikiCategories: [],
       wikiPageTitles: [],
@@ -219,11 +224,20 @@ class App extends Component {
     });
   }
 
+  toggleView(evt) {
+    if (evt.target.innerHTML === 'Create a deck') {
+      this.setState({ searchPage: true });
+    } else {
+      this.setState({ searchPage: false });
+    }
+  }
+
   componentWillUnmount() {
     this.setState({
       fields: {
         title: ''
       },
+      searchPage: true,
       listTitle: '',
       wikiCategories: [],
       wikiPageTitles: [],
@@ -243,84 +257,103 @@ class App extends Component {
           <Navbar.Header>
             <Navbar.Brand>Wikipedia Flashcard Automator</Navbar.Brand>
           </Navbar.Header>
+          <Nav>
+            <NavItem onClick={this.toggleView}>Create a deck</NavItem>
+            <NavItem onClick={this.toggleView}>See all decks</NavItem>
+          </Nav>
         </Navbar>
-        <Grid>
-          <Row>
-            <Col md={4} />
-            <Col md={3}>
-              <form onSubmit={this.getCategories}>
-                <FormGroup>
-                  <ControlLabel>Wikipedia page title:</ControlLabel>
-                  <FormControl
-                    placeholder="Title"
-                    name="title"
-                    value={this.state.fields.title}
-                    onChange={this.onInputChange}
-                  />
-                  <Button type="submit">Submit</Button>
-                </FormGroup>
-              </form>
-            </Col>
-          </Row>
-          <Row>
-            <div>
-              <Col md={4}>
-                <h2 className="listHider" style={{ visibility: 'hidden' }}>
-                  Categories
-                </h2>
-                <ListGroup>
-                  {this.state.wikiCategories.map((category, i) => {
-                    return (
-                      <ListGroupItem
-                        key={i}
-                        id="button"
-                        onClick={this.fromCategoryToPageids}
-                      >
-                        {category}
-                      </ListGroupItem>
-                    );
-                  })}
-                </ListGroup>
+        {this.state.searchPage && (
+          <Grid>
+            <Row>
+              <Col md={4} />
+              <Col md={3}>
+                <form onSubmit={this.getCategories}>
+                  <FormGroup>
+                    <ControlLabel>Wikipedia page title:</ControlLabel>
+                    <FormControl
+                      placeholder="Title"
+                      name="title"
+                      value={this.state.fields.title}
+                      onChange={this.onInputChange}
+                    />
+                    <Button type="submit">Submit</Button>
+                  </FormGroup>
+                </form>
               </Col>
-              <Col md={4}>
-                <h2 className="otherListHider" style={{ visibility: 'hidden' }}>
-                  Lists
-                </h2>
-                <ListGroup>
-                  {this.state.wikiListofLists.map((listItem, i) => {
-                    return (
-                      <ListGroupItem
-                        key={i}
-                        id="button"
-                        onClick={this.getCategories}
-                      >
-                        {listItem}
-                      </ListGroupItem>
-                    );
-                  })}
-                </ListGroup>
-              </Col>
-              <Col md={4}>
-                <h2 className="otherListHider" style={{ visibility: 'hidden' }}>
-                  Page Titles
-                </h2>
-                <CardButton id="button" createCards={this.createCards} />
-                <h4 className="otherListHider" style={{ visibility: 'hidden' }}>
-                  List Title: {this.state.listTitle}
-                </h4>
-                <ListGroup>
-                  {this.state.wikiPageTitles.map((title, i) => {
-                    return <ListGroupItem key={i}>{title}</ListGroupItem>;
-                  })}
-                </ListGroup>
-              </Col>
-            </div>
-            {/* <ul className="No-style-list">{this.state.cardItems.map((x, i) => {
-                return <li key={i}>{x.title}</li>}
-                )}
-              </ul> */}
-          </Row>
-        </Grid>
+            </Row>
+            <Row>
+              <div>
+                <Col md={4}>
+                  <h2 className="listHider" style={{ visibility: 'hidden' }}>
+                    Categories
+                  </h2>
+                  <ListGroup>
+                    {this.state.wikiCategories.map((category, i) => {
+                      return (
+                        <ListGroupItem
+                          key={i}
+                          id="button"
+                          onClick={this.fromCategoryToPageids}
+                        >
+                          {category}
+                        </ListGroupItem>
+                      );
+                    })}
+                  </ListGroup>
+                </Col>
+                <Col md={4}>
+                  <h2
+                    className="otherListHider"
+                    style={{ visibility: 'hidden' }}
+                  >
+                    Lists
+                  </h2>
+                  <ListGroup>
+                    {this.state.wikiListofLists.map((listItem, i) => {
+                      return (
+                        <ListGroupItem
+                          key={i}
+                          id="button"
+                          onClick={this.getCategories}
+                        >
+                          {listItem}
+                        </ListGroupItem>
+                      );
+                    })}
+                  </ListGroup>
+                </Col>
+                <Col md={4}>
+                  <h2
+                    className="otherListHider"
+                    style={{ visibility: 'hidden' }}
+                  >
+                    Page Titles
+                  </h2>
+                  <CardButton id="button" createCards={this.createCards} />
+                  <h4
+                    className="otherListHider"
+                    style={{ visibility: 'hidden' }}
+                  >
+                    List Title: {this.state.listTitle}
+                  </h4>
+                  <ListGroup>
+                    {this.state.wikiPageTitles.map((title, i) => {
+                      return <ListGroupItem key={i}>{title}</ListGroupItem>;
+                    })}
+                  </ListGroup>
+                </Col>
+              </div>
+            </Row>
+          </Grid>
+        )}
+
+        {!this.state.searchPage && (
+          <ul className="No-style-list">
+            {this.state.cardItems.map((x, i) => {
+              return <li key={i}>{x.title}</li>;
+            })}
+          </ul>
+        )}
       </div>
     );
   }
