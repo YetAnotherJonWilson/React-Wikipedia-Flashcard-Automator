@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
-import { Button, Grid, Row, Col, FormGroup, ControlLabel, FormControl, Navbar, ListGroup, ListGroupItem } from 'react-bootstrap';
+import {
+  Button,
+  Grid,
+  Row,
+  Col,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  Navbar,
+  ListGroup,
+  ListGroupItem
+} from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
 
 class App extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -28,20 +39,14 @@ class App extends Component {
     this.createCards = this.createCards.bind(this);
   }
 
-  componentWillMount () {
+  componentWillMount() {
     window.addEventListener(
       'beforeunload',
       this.saveStateToLocalStorage.bind(this)
     );
-  //   const cache = localStorage.getItem('cardItems');
-  //   if (cache) {
-  //     console.log(JSON.parse(cache));
-  //     // this.setState({ cardItems: JSON.parse(cache) });
-  //     return;
-  //   }
   }
 
-  saveStateToLocalStorage () {
+  saveStateToLocalStorage() {
     this.setState({
       fields: {
         title: ''
@@ -56,14 +61,14 @@ class App extends Component {
     });
   }
 
-  onInputChange (evt) {
+  onInputChange(evt) {
     const fields = this.state.fields;
     fields[evt.target.name] = evt.target.value;
     this.setState({ fields });
   }
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
-  getCategories (evt) {
+  getCategories(evt) {
     if (evt.target.id === 'button') {
       var listTitle = evt.target.innerHTML.split(' ');
       var listPageTitle = listTitle.join('%20');
@@ -73,34 +78,43 @@ class App extends Component {
     }
     if (listPageTitle === '') {
       this.setState({
-        fields: {title: 'Please enter a title'}
+        fields: { title: 'Please enter a title' }
       });
       return;
     }
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`) // eslint-disable-line
+    fetch(
+      `https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${listPageTitle}&prop=categories&cllimit=max&format=json&formatversion=2`
+    ) // eslint-disable-line
       .then(response => response.json())
       .then(
-        (result) => {
+        result => {
           var categoriesList = result.query.pages[0].categories;
           if (categoriesList === undefined) {
             return;
           }
-          var categoriesArray = categoriesList.map((category) => { return category.title; });
-          document.querySelectorAll('.listHider').forEach(x => x.style.visibility = 'visible'); // eslint-disable-line
+          var categoriesArray = categoriesList.map(category => {
+            return category.title;
+          });
+          document
+            .querySelectorAll('.listHider')
+            .forEach(x => (x.style.visibility = 'visible')); // eslint-disable-line
           this.setState({
             wikiCategories: categoriesArray
           });
-          console.log('this.state.wikiCategories (categoriesArray): ', this.state.wikiCategories);
+          console.log(
+            'this.state.wikiCategories (categoriesArray): ',
+            this.state.wikiCategories
+          );
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-        (error) => {
+        error => {
           console.log(error);
         }
       );
 
-    this.setState({fields: {title: ''}});
+    this.setState({ fields: { title: '' } });
     evt.preventDefault();
   }
 
@@ -110,22 +124,42 @@ class App extends Component {
   // (i.e. names of Presidents, or Asian countries) listed
   // by page titles (not Category names), with correlated pageids
   // Note: Add ability to dynamically choose list limit based on expected number of results
-  fromCategoryToPageids (evt) {
+  fromCategoryToPageids(evt) {
     var categoryTitlePlainText = evt.target.innerHTML;
     var categoryTitle = categoryTitlePlainText.split(' ').join('%20');
     var correctCategoryTitle = categoryTitlePlainText.replace('Category:', '');
 
-    fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`) // eslint-disable-line
+    fetch(
+      `https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`
+    ) // eslint-disable-line
       .then(response => response.json())
       .then(
-        (result) => {
+        result => {
           var categoriesList = result.query.categorymembers;
-          var categoriesArray = categoriesList.map((category) => { return category.title; });
-          var wikiPageTitles = categoriesArray.filter(category => (!category.includes('Category') && !category.includes('List of') && !category.includes('Lists of')));
-          var wikiListCategories = categoriesArray.filter(category => (category.includes('Category') && !category.includes('Category:List')));
-          var wikiListofLists = categoriesArray.filter(category => (category.includes('List of') || category.includes('Lists of')));
-          document.querySelectorAll('.otherListHider').forEach(x => x.style.visibility = 'visible'); // eslint-disable-line
-          if (wikiPageTitles[0]) { document.querySelector('.cardButton').style.visibility = 'visible'; }
+          var categoriesArray = categoriesList.map(category => {
+            return category.title;
+          });
+          var wikiPageTitles = categoriesArray.filter(
+            category =>
+              !category.includes('Category') &&
+              !category.includes('List of') &&
+              !category.includes('Lists of')
+          );
+          var wikiListCategories = categoriesArray.filter(
+            category =>
+              category.includes('Category') &&
+              !category.includes('Category:List')
+          );
+          var wikiListofLists = categoriesArray.filter(
+            category =>
+              category.includes('List of') || category.includes('Lists of')
+          );
+          document
+            .querySelectorAll('.otherListHider')
+            .forEach(x => (x.style.visibility = 'visible')); // eslint-disable-line
+          if (wikiPageTitles[0]) {
+            document.querySelector('.cardButton').style.visibility = 'visible';
+          }
           this.setState({
             listTitle: correctCategoryTitle,
             wikiCategories: wikiListCategories,
@@ -136,7 +170,7 @@ class App extends Component {
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-        (error) => {
+        error => {
           console.log(error);
         }
       );
@@ -144,7 +178,7 @@ class App extends Component {
   }
 
   // Step three: Use pageid's to get extracts in plaintext
-  createCards (evt) {
+  createCards(evt) {
     var pageTitles = [];
     this.state.wikiPageTitles.forEach(title => {
       pageTitles.push(title);
@@ -158,32 +192,34 @@ class App extends Component {
       var extracts = [];
       pageTitlesArray.forEach((x, i, a) => {
         var titles = x.join('|');
-        fetch(`https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`) // eslint-disable-line
+        fetch(
+          `https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`
+        ) // eslint-disable-line
           .then(response => response.json())
           .then(
-            (result) => {
+            result => {
               extracts = extracts.concat(result.query.pages);
-              console.log(extracts.length, this.state.wikiPageTitles.length);
               if (extracts.length === this.state.wikiPageTitles.length) {
                 resolve(extracts);
               }
             },
-            (error) => {
+            error => {
               console.log(error);
             }
           );
       });
     });
 
-    fetchWiki.then((extracts) => {
+    fetchWiki.then(extracts => {
       console.log('extracts', extracts);
-      var deckTitle = {'title': this.state.listTitle};
+      var deckTitle = { title: this.state.listTitle };
       extracts.unshift(deckTitle);
-      this.setState({cardItems: extracts});
+      extracts = this.state.cardItems.concat(extracts);
+      this.setState({ cardItems: extracts });
     });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.setState({
       fields: {
         title: ''
@@ -198,16 +234,14 @@ class App extends Component {
     });
   }
 
-  render () {
+  render() {
     return (
-      <div className='App'>
+      <div className="App">
         {/* Simple Storage handles localstorage */}
         <SimpleStorage parent={this} />
         <Navbar>
           <Navbar.Header>
-            <Navbar.Brand>
-                Wikipedia Flashcard Automator
-            </Navbar.Brand>
+            <Navbar.Brand>Wikipedia Flashcard Automator</Navbar.Brand>
           </Navbar.Header>
         </Navbar>
         <Grid>
@@ -217,8 +251,13 @@ class App extends Component {
               <form onSubmit={this.getCategories}>
                 <FormGroup>
                   <ControlLabel>Wikipedia page title:</ControlLabel>
-                  <FormControl placeholder='Title' name='title' value={this.state.fields.title} onChange={this.onInputChange} />
-                  <Button type='submit'>Submit</Button>
+                  <FormControl
+                    placeholder="Title"
+                    name="title"
+                    value={this.state.fields.title}
+                    onChange={this.onInputChange}
+                  />
+                  <Button type="submit">Submit</Button>
                 </FormGroup>
               </form>
             </Col>
@@ -226,32 +265,53 @@ class App extends Component {
           <Row>
             <div>
               <Col md={4}>
-                <h2 className='listHider' style={{visibility: 'hidden'}}>Categories</h2>
+                <h2 className="listHider" style={{ visibility: 'hidden' }}>
+                  Categories
+                </h2>
                 <ListGroup>
-                  { this.state.wikiCategories.map((category, i) => {
-                    return <ListGroupItem key={i} id='button' onClick={this.fromCategoryToPageids}>{category}</ListGroupItem>;
-                  }
-                  )}
+                  {this.state.wikiCategories.map((category, i) => {
+                    return (
+                      <ListGroupItem
+                        key={i}
+                        id="button"
+                        onClick={this.fromCategoryToPageids}
+                      >
+                        {category}
+                      </ListGroupItem>
+                    );
+                  })}
                 </ListGroup>
               </Col>
               <Col md={4}>
-                <h2 className='otherListHider' style={{visibility: 'hidden'}}>Lists</h2>
+                <h2 className="otherListHider" style={{ visibility: 'hidden' }}>
+                  Lists
+                </h2>
                 <ListGroup>
-                  { this.state.wikiListofLists.map((listItem, i) => {
-                    return <ListGroupItem key={i} id='button' onClick={this.getCategories}>{listItem}</ListGroupItem>;
-                  }
-                  )}
+                  {this.state.wikiListofLists.map((listItem, i) => {
+                    return (
+                      <ListGroupItem
+                        key={i}
+                        id="button"
+                        onClick={this.getCategories}
+                      >
+                        {listItem}
+                      </ListGroupItem>
+                    );
+                  })}
                 </ListGroup>
               </Col>
               <Col md={4}>
-                <h2 className='otherListHider' style={{visibility: 'hidden'}}>Page Titles</h2>
-                <CardButton id='button' createCards={this.createCards} />
-                <h4 className='otherListHider' style={{visibility: 'hidden'}}>List Title: {this.state.listTitle}</h4>
+                <h2 className="otherListHider" style={{ visibility: 'hidden' }}>
+                  Page Titles
+                </h2>
+                <CardButton id="button" createCards={this.createCards} />
+                <h4 className="otherListHider" style={{ visibility: 'hidden' }}>
+                  List Title: {this.state.listTitle}
+                </h4>
                 <ListGroup>
-                  { this.state.wikiPageTitles.map((title, i) => {
+                  {this.state.wikiPageTitles.map((title, i) => {
                     return <ListGroupItem key={i}>{title}</ListGroupItem>;
-                  }
-                  )}
+                  })}
                 </ListGroup>
               </Col>
             </div>
