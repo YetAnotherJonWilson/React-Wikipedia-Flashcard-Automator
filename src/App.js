@@ -219,6 +219,7 @@ class App extends Component {
       console.log('extracts', extracts);
       var deckTitle = { title: this.state.listTitle };
       extracts.unshift(deckTitle);
+      extracts = [extracts];
       extracts = this.state.cardItems.concat(extracts);
       this.setState({ cardItems: extracts });
     });
