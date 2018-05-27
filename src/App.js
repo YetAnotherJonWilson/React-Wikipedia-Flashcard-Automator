@@ -12,7 +12,9 @@ import {
   Nav,
   NavItem,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  DropdownButton,
+  MenuItem
 } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
@@ -197,6 +199,7 @@ class App extends Component {
       var extracts = [];
       pageTitlesArray.forEach((x, i, a) => {
         var titles = x.join('|');
+        titles = titles.replace('&', '%26');
         fetch(
           `https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`
         ) // eslint-disable-line
@@ -349,11 +352,11 @@ class App extends Component {
         )}
 
         {!this.state.searchPage && (
-          <ul className="No-style-list">
+          <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
             {this.state.cardItems.map((x, i) => {
-              return <li key={i}>{x.title}</li>;
+              return <MenuItem key={i}>{x[0].title}</MenuItem>;
             })}
-          </ul>
+          </DropdownButton>
         )}
       </div>
     );
