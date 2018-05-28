@@ -35,7 +35,8 @@ class App extends Component {
       cardItems: [],
       searchResultsHeaders: {
         visibility: 'hidden'
-      }
+      },
+      openDeck: ''
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -43,6 +44,7 @@ class App extends Component {
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     this.createCards = this.createCards.bind(this);
     this.toggleView = this.toggleView.bind(this);
+    this.chooseDeck = this.chooseDeck.bind(this);
   }
 
   componentWillMount() {
@@ -262,6 +264,11 @@ class App extends Component {
     });
   }
 
+  chooseDeck(evt) {
+    this.setState({ openDeck: evt.target.innerHTML });
+    document.querySelector('#openDeck').style.visibility = 'visible';
+  }
+
   render() {
     return (
       <div className="App">
@@ -362,11 +369,20 @@ class App extends Component {
         )}
 
         {!this.state.searchPage && (
-          <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
-            {this.state.cardItems.map((x, i) => {
-              return <MenuItem key={i}>{x[0].title}</MenuItem>;
-            })}
-          </DropdownButton>
+          <div>
+            <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
+              {this.state.cardItems.map((x, i) => {
+                return (
+                  <MenuItem onClick={this.chooseDeck} key={i}>
+                    {x[0].title}
+                  </MenuItem>
+                );
+              })}
+            </DropdownButton>
+            <h2 id="openDeck" style={{ visibility: 'hidden' }}>
+              {this.state.openDeck}
+            </h2>
+          </div>
         )}
       </div>
     );
