@@ -186,12 +186,16 @@ class App extends Component {
 
   // Step three: Use pageid's to get extracts in plaintext
   createCards(evt) {
-    this.state.cardItems.forEach((x, i) => {
-      if (x[0].title === this.state.listTitle) {
-        console.log('contained');
-        return;
-      }
+    // check for duplicates
+    var duplicatesArray = [];
+    this.state.cardItems.forEach(x => {
+      duplicatesArray.push(x[0].title);
     });
+    if (duplicatesArray.includes(this.state.listTitle)) {
+      console.log('contained');
+      return;
+    }
+
     var pageTitles = [];
     this.state.wikiPageTitles.forEach(title => {
       pageTitles.push(title);
