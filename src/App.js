@@ -14,7 +14,9 @@ import {
   ListGroup,
   ListGroupItem,
   DropdownButton,
-  MenuItem
+  MenuItem,
+  PanelGroup,
+  Panel
 } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
@@ -66,7 +68,8 @@ class App extends Component {
       wikiListofLists: [],
       searchResultsHeaders: {
         visibility: 'hidden'
-      }
+      },
+      openDeck: ''
     });
   }
 
@@ -260,7 +263,8 @@ class App extends Component {
       wikiListofLists: [],
       searchResultsHeaders: {
         visibility: 'hidden'
-      }
+      },
+      openDeck: ''
     });
   }
 
@@ -379,9 +383,26 @@ class App extends Component {
                 );
               })}
             </DropdownButton>
-            <h2 id="openDeck" style={{ visibility: 'hidden' }}>
-              {this.state.openDeck}
-            </h2>
+            <div id="openDeck" style={{ visibility: 'hidden' }}>
+              <h3>{this.state.openDeck}</h3>
+              <PanelGroup accordion id="Cards">
+                {this.state.cardItems.forEach((x, i) => {
+                  if (x[0].title === this.state.openDeck) {
+                    x.map((y, j) => {
+                      console.log(y.title);
+                      return (
+                        <Panel eventKey={j}>
+                          <Panel.Heading>
+                            <Panel.Title toggle>{y.title}</Panel.Title>
+                          </Panel.Heading>
+                          <Panel.Body collapsible>{y.extract}</Panel.Body>
+                        </Panel>
+                      );
+                    });
+                  }
+                })}
+              </PanelGroup>
+            </div>
           </div>
         )}
       </div>
