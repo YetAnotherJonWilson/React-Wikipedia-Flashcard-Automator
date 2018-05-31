@@ -38,7 +38,8 @@ class App extends Component {
       searchResultsHeaders: {
         visibility: 'hidden'
       },
-      openDeck: ''
+      openDeck: '',
+      openDeckArray: []
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -69,7 +70,8 @@ class App extends Component {
       searchResultsHeaders: {
         visibility: 'hidden'
       },
-      openDeck: ''
+      openDeck: '',
+      openDeckArray: []
     });
   }
 
@@ -264,12 +266,24 @@ class App extends Component {
       searchResultsHeaders: {
         visibility: 'hidden'
       },
-      openDeck: ''
+      openDeck: '',
+      openDeckArray: []
     });
   }
 
   chooseDeck(evt) {
     this.setState({ openDeck: evt.target.innerHTML });
+    var tempDeckArray = [];
+    this.state.cardItems.forEach((x, i) => {
+      if (x[0].title === evt.target.innerHTML) {
+        console.log('match');
+        for (var y = 1; y < x.length; y++) {
+          tempDeckArray.push(x[y]);
+        }
+      }
+    });
+    this.setState({ openDeckArray: tempDeckArray });
+    console.log(this.state.openDeckArray);
     document.querySelector('#openDeck').style.visibility = 'visible';
   }
 
@@ -373,37 +387,37 @@ class App extends Component {
         )}
 
         {!this.state.searchPage && (
-          <div>
-            <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
-              {this.state.cardItems.map((x, i) => {
-                return (
-                  <MenuItem onClick={this.chooseDeck} key={i}>
-                    {x[0].title}
-                  </MenuItem>
-                );
-              })}
-            </DropdownButton>
-            <div id="openDeck" style={{ visibility: 'hidden' }}>
-              <h3>{this.state.openDeck}</h3>
-              <PanelGroup accordion id="Cards">
-                {this.state.cardItems.forEach((x, i) => {
-                  if (x[0].title === this.state.openDeck) {
-                    x.map((y, j) => {
-                      console.log(y.title);
+          <Grid>
+            <Row>
+              <Col md={3} />
+              <Col md={6}>
+                <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
+                  {this.state.cardItems.map((x, i) => {
+                    return (
+                      <MenuItem onClick={this.chooseDeck} key={i}>
+                        {x[0].title}
+                      </MenuItem>
+                    );
+                  })}
+                </DropdownButton>
+                <div id="openDeck" style={{ visibility: 'hidden' }}>
+                  <h3>{this.state.openDeck}</h3>
+                  <PanelGroup accordion id="Cards">
+                    {this.state.openDeckArray.map((z, k) => {
                       return (
-                        <Panel eventKey={j}>
+                        <Panel eventKey={k} key={k}>
                           <Panel.Heading>
-                            <Panel.Title toggle>{y.title}</Panel.Title>
+                            <Panel.Title toggle>{z.title}</Panel.Title>
                           </Panel.Heading>
-                          <Panel.Body collapsible>{y.extract}</Panel.Body>
+                          <Panel.Body collapsible>{z.extract}</Panel.Body>
                         </Panel>
                       );
-                    });
-                  }
-                })}
-              </PanelGroup>
-            </div>
-          </div>
+                    })};
+                  </PanelGroup>
+                </div>
+              </Col>
+            </Row>
+          </Grid>
         )}
       </div>
     );
