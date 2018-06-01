@@ -240,6 +240,14 @@ class App extends Component {
       var deckTitle = { title: this.state.listTitle };
       extracts.unshift(deckTitle);
       extracts = [extracts];
+
+      var regex = /(<([^>]+)>)/gi;
+      for (var i = 0; i < extracts[0].length; i++) {
+        if (extracts[0][i].extract) {
+          extracts[0][i].extract = extracts[0][i].extract.replace(regex, '');
+        }
+        console.log(extracts[0][i].extract);
+      }
       extracts = this.state.cardItems.concat(extracts);
       this.setState({ cardItems: extracts });
     });
