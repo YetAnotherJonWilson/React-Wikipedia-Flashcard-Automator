@@ -48,6 +48,7 @@ class App extends Component {
     this.createCards = this.createCards.bind(this);
     this.toggleView = this.toggleView.bind(this);
     this.chooseDeck = this.chooseDeck.bind(this);
+    this.startSearch = this.startSearch.bind(this);
   }
 
   componentWillMount() {
@@ -79,6 +80,19 @@ class App extends Component {
     const fields = this.state.fields;
     fields[evt.target.name] = evt.target.value;
     this.setState({ fields });
+  }
+
+  startSearch(evt) {
+    evt.preventDefault();
+    console.log('event: ', evt);
+    console.log('this.state.fields.title: ', this.state.fields.title);
+    if (this.state.fields.title.includes('Category:')) {
+      var categorySearchTitle = this.state.fields.title.split(' ');
+      var categoryPageTitle = categorySearchTitle.join('%20');
+      this.fromCategoryToPageids(categoryPageTitle);
+    } else {
+      this.getCategories(evt);
+    }
   }
 
   // Step one: Input a title for a list page, and use it to find the correct category for the specific list needed
@@ -139,9 +153,20 @@ class App extends Component {
   // by page titles (not Category names), with correlated pageids
   // Note: Add ability to dynamically choose list limit based on expected number of results
   fromCategoryToPageids(evt) {
-    var categoryTitlePlainText = evt.target.innerHTML;
-    var categoryTitle = categoryTitlePlainText.split(' ').join('%20');
-    var correctCategoryTitle = categoryTitlePlainText.replace('Category:', '');
+    // Run this to determine if this function is being called from the search button or from a category button
+    var categoryTitle;
+    if (typeof evt === 'string') {
+      categoryTitle = evt;
+    } else {
+      evt.preventDefault();
+      console.log(evt.target.innerHTML);
+      var categoryTitlePlainText = evt.target.innerHTML;
+      categoryTitle = categoryTitlePlainText.split(' ').join('%20');
+      var correctCategoryTitle = categoryTitlePlainText.replace(
+        'Category:',
+        ''
+      );
+    }
 
     fetch(
       `https://en.wikipedia.org/w/api.php?origin=*&action=query&list=categorymembers&cmtitle=${categoryTitle}&cmlimit=100&format=json&formatversion=2`
@@ -188,7 +213,6 @@ class App extends Component {
           console.log(error);
         }
       );
-    evt.preventDefault();
   }
 
   // Step three: Use pageid's to get extracts in plaintext
@@ -314,7 +338,7 @@ class App extends Component {
             <Row>
               <Col md={4} />
               <Col md={3}>
-                <form onSubmit={this.getCategories}>
+                <form onSubmit={this.startSearch}>
                   <FormGroup>
                     <ControlLabel>Wikipedia page title:</ControlLabel>
                     <FormControl
