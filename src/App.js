@@ -355,63 +355,63 @@ class App extends Component {
             <Row>
               <div>
                 <Col md={4}>
-                  <h2 className="listHider" style={{ visibility: 'hidden' }}>
-                    Categories
-                  </h2>
-                  <ListGroup>
-                    {this.state.wikiCategories.map((category, i) => {
-                      return (
-                        <ListGroupItem
-                          key={i}
-                          id="button"
-                          onClick={this.fromCategoryToPageids}
-                        >
-                          {category}
-                        </ListGroupItem>
-                      );
-                    })}
-                  </ListGroup>
+                  <div className="listHider" style={{ visibility: 'hidden' }}>
+                    <h2>Categories</h2>
+                    <ListGroup>
+                      {this.state.wikiCategories.map((category, i) => {
+                        return (
+                          <ListGroupItem
+                            key={i}
+                            id="button"
+                            onClick={this.fromCategoryToPageids}
+                          >
+                            {category}
+                          </ListGroupItem>
+                        );
+                      })}
+                    </ListGroup>
+                  </div>
                 </Col>
                 <Col md={4}>
-                  <h2
+                  <div
                     className="otherListHider"
                     style={{ visibility: 'hidden' }}
                   >
-                    Lists
-                  </h2>
-                  <ListGroup>
-                    {this.state.wikiListofLists.map((listItem, i) => {
-                      return (
-                        <ListGroupItem
-                          key={i}
-                          id="button"
-                          onClick={this.getCategories}
-                        >
-                          {listItem}
-                        </ListGroupItem>
-                      );
-                    })}
-                  </ListGroup>
+                    <h2>Lists</h2>
+                    <ListGroup>
+                      {this.state.wikiListofLists.map((listItem, i) => {
+                        return (
+                          <ListGroupItem
+                            key={i}
+                            id="button"
+                            onClick={this.getCategories}
+                          >
+                            {listItem}
+                          </ListGroupItem>
+                        );
+                      })}
+                    </ListGroup>
+                  </div>
                 </Col>
                 <Col md={4}>
-                  <h2
+                  <div
                     className="otherListHider"
                     style={{ visibility: 'hidden' }}
                   >
-                    Page Titles
-                  </h2>
-                  <CardButton id="button" createCards={this.createCards} />
-                  <h4
-                    className="otherListHider"
-                    style={{ visibility: 'hidden' }}
-                  >
-                    List Title: {this.state.listTitle}
-                  </h4>
-                  <ListGroup>
-                    {this.state.wikiPageTitles.map((title, i) => {
-                      return <ListGroupItem key={i}>{title}</ListGroupItem>;
-                    })}
-                  </ListGroup>
+                    <h2>Page Titles</h2>
+                    <CardButton id="button" createCards={this.createCards} />
+                    <h4
+                      className="otherListHider"
+                      style={{ visibility: 'hidden' }}
+                    >
+                      List Title: {this.state.listTitle}
+                    </h4>
+                    <ListGroup>
+                      {this.state.wikiPageTitles.map((title, i) => {
+                        return <ListGroupItem key={i}>{title}</ListGroupItem>;
+                      })}
+                    </ListGroup>
+                  </div>
                 </Col>
               </div>
             </Row>
