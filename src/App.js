@@ -231,6 +231,7 @@ class App extends Component {
     this.state.wikiPageTitles.forEach(title => {
       pageTitles.push(title);
     });
+    console.log('PageTitlesLength: ', pageTitles.length);
     var n = Math.ceil(pageTitles.length / 20);
     var pageTitlesArray = [];
     for (var i = 0; i < n; i++) {
@@ -270,6 +271,7 @@ class App extends Component {
         if (extracts[0][i].extract) {
           extracts[0][i].extract = extracts[0][i].extract.replace(regex, '');
         }
+        // This is sometimes undefined. For issue where decks are failing to be created, this may be the issue.
         console.log(extracts[0][i].extract);
       }
       extracts = this.state.cardItems.concat(extracts);
