@@ -235,7 +235,7 @@ class App extends Component {
     var n = Math.ceil(pageTitles.length / 20);
     var pageTitlesArray = [];
     for (var i = 0; i < n; i++) {
-      pageTitlesArray.push(pageTitles.splice(0, 19));
+      pageTitlesArray.push(pageTitles.splice(0, 20));
     }
     var fetchWiki = new Promise((resolve, reject) => {
       var extracts = [];
@@ -271,7 +271,6 @@ class App extends Component {
         if (extracts[0][i].extract) {
           extracts[0][i].extract = extracts[0][i].extract.replace(regex, '');
         }
-        // This is sometimes undefined. For issue where decks are failing to be created, this may be the issue.
         console.log(extracts[0][i].extract);
       }
       extracts = this.state.cardItems.concat(extracts);
@@ -446,7 +445,7 @@ class App extends Component {
                           <Panel.Body collapsible>{z.extract}</Panel.Body>
                         </Panel>
                       );
-                    })};
+                    })}
                   </PanelGroup>
                 </div>
               </Col>
