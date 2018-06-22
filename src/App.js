@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CardButton from './CardButton';
+import ChooseDeck from './ChooseDeck';
 import {
   Button,
   Grid,
@@ -12,11 +13,7 @@ import {
   Nav,
   NavItem,
   ListGroup,
-  ListGroupItem,
-  DropdownButton,
-  MenuItem,
-  PanelGroup,
-  Panel
+  ListGroupItem
 } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
@@ -47,7 +44,6 @@ class App extends Component {
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
     this.createCards = this.createCards.bind(this);
     this.toggleView = this.toggleView.bind(this);
-    this.chooseDeck = this.chooseDeck.bind(this);
     this.startSearch = this.startSearch.bind(this);
   }
 
@@ -304,22 +300,6 @@ class App extends Component {
     });
   }
 
-  chooseDeck(evt) {
-    this.setState({ openDeck: evt.target.innerHTML });
-    var tempDeckArray = [];
-    this.state.cardItems.forEach((x, i) => {
-      if (x[0].title === evt.target.innerHTML) {
-        console.log('match');
-        for (var y = 1; y < x.length; y++) {
-          tempDeckArray.push(x[y]);
-        }
-      }
-    });
-    this.setState({ openDeckArray: tempDeckArray });
-    console.log(this.state.openDeckArray);
-    document.querySelector('#openDeck').style.visibility = 'visible';
-  }
-
   render() {
     return (
       <div className="App">
@@ -420,37 +400,7 @@ class App extends Component {
         )}
 
         {!this.state.searchPage && (
-          <Grid>
-            <Row>
-              <Col md={3} />
-              <Col md={6}>
-                <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
-                  {this.state.cardItems.map((x, i) => {
-                    return (
-                      <MenuItem onClick={this.chooseDeck} key={i}>
-                        {x[0].title}
-                      </MenuItem>
-                    );
-                  })}
-                </DropdownButton>
-                <div id="openDeck" style={{ visibility: 'hidden' }}>
-                  <h3>{this.state.openDeck}</h3>
-                  <PanelGroup accordion id="Cards">
-                    {this.state.openDeckArray.map((z, k) => {
-                      return (
-                        <Panel eventKey={k} key={k}>
-                          <Panel.Heading>
-                            <Panel.Title toggle>{z.title}</Panel.Title>
-                          </Panel.Heading>
-                          <Panel.Body collapsible>{z.extract}</Panel.Body>
-                        </Panel>
-                      );
-                    })}
-                  </PanelGroup>
-                </div>
-              </Col>
-            </Row>
-          </Grid>
+          <ChooseDeck cardItems={this.state.cardItems} />
         )}
       </div>
     );
