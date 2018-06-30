@@ -142,6 +142,11 @@ class App extends Component {
     evt.preventDefault();
   }
 
+  // Step Two
+  chooseCategory(value) {
+    console.log('value from CategoryItems component: ', value);
+  }
+
   // Step three: Use pageid's to get extracts in plaintext
   createCards(evt) {
     // check for duplicates
@@ -269,7 +274,10 @@ class App extends Component {
                 <Col md={4}>
                   <div className="listHider" style={{ visibility: 'hidden' }}>
                     <h2>Categories</h2>
-                    <CategoryItems wikiCategories={this.state.wikiCategories} />
+                    <CategoryItems
+                      wikiCategories={this.state.wikiCategories}
+                      onChooseCategory={this.chooseCategory}
+                    />
                   </div>
                 </Col>
                 <Col md={4}>
