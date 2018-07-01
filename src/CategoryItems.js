@@ -18,8 +18,6 @@ class CategoryItems extends Component {
   // Note: Add ability to dynamically choose list limit based on expected number of results
   fromCategoryToPageids(evt) {
     // Run this to determine if this function is being called from the search button or from a category button
-    this.props.onChooseCategory('I am from CategoryItems Component');
-    return;
 
     var categoryTitle;
     if (typeof evt === 'string') {
@@ -66,12 +64,12 @@ class CategoryItems extends Component {
           if (wikiPageTitles[0]) {
             document.querySelector('.cardButton').style.visibility = 'visible';
           }
-          // this.setState({
-          //   listTitle: correctCategoryTitle,
-          //   wikiCategories: wikiListCategories,
-          //   wikiListofLists: wikiListofLists,
-          //   wikiPageTitles: wikiPageTitles
-          // });
+          this.props.onChooseCategory(
+            correctCategoryTitle,
+            wikiListCategories,
+            wikiListofLists,
+            wikiPageTitles
+          );
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow

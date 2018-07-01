@@ -45,6 +45,7 @@ class App extends Component {
     this.createCards = this.createCards.bind(this);
     this.toggleView = this.toggleView.bind(this);
     this.startSearch = this.startSearch.bind(this);
+    this.chooseCategory = this.chooseCategory.bind(this);
   }
 
   componentWillMount() {
@@ -143,8 +144,18 @@ class App extends Component {
   }
 
   // Step Two
-  chooseCategory(value) {
-    console.log('value from CategoryItems component: ', value);
+  chooseCategory(
+    correctCategoryTitle,
+    wikiListCategories,
+    wikiListofLists,
+    wikiPageTitles
+  ) {
+    this.setState({
+      listTitle: correctCategoryTitle,
+      wikiCategories: wikiListCategories,
+      wikiListofLists: wikiListofLists,
+      wikiPageTitles: wikiPageTitles
+    });
   }
 
   // Step three: Use pageid's to get extracts in plaintext
