@@ -46,6 +46,7 @@ class App extends Component {
     this.toggleView = this.toggleView.bind(this);
     this.startSearch = this.startSearch.bind(this);
     this.chooseCategory = this.chooseCategory.bind(this);
+    this.setCardsState - this.setCardsState.bind(this);
   }
 
   componentWillMount() {
@@ -158,67 +159,9 @@ class App extends Component {
     });
   }
 
-  // Step three: Use pageid's to get extracts in plaintext
-  createCards(evt) {
-    // check for duplicates
-    var duplicatesArray = [];
-    this.state.cardItems.forEach(x => {
-      duplicatesArray.push(x[0].title);
-    });
-    if (duplicatesArray.includes(this.state.listTitle)) {
-      console.log('contained');
-      return;
-    }
-
-    var pageTitles = [];
-    this.state.wikiPageTitles.forEach(title => {
-      pageTitles.push(title);
-    });
-    console.log('PageTitlesLength: ', pageTitles.length);
-    var n = Math.ceil(pageTitles.length / 20);
-    var pageTitlesArray = [];
-    for (var i = 0; i < n; i++) {
-      pageTitlesArray.push(pageTitles.splice(0, 20));
-    }
-    var fetchWiki = new Promise((resolve, reject) => {
-      var extracts = [];
-      pageTitlesArray.forEach((x, i, a) => {
-        var titles = x.join('|');
-        titles = titles.replace('&', '%26');
-        fetch(
-          `https://en.wikipedia.org/w/api.php?origin=*&action=query&titles=${titles}&prop=extracts&exintro=true&format=json&formatversion=2`
-        ) // eslint-disable-line
-          .then(response => response.json())
-          .then(
-            result => {
-              extracts = extracts.concat(result.query.pages);
-              if (extracts.length === this.state.wikiPageTitles.length) {
-                resolve(extracts);
-              }
-            },
-            error => {
-              console.log(error);
-            }
-          );
-      });
-    });
-
-    fetchWiki.then(extracts => {
-      console.log('extracts', extracts);
-      var deckTitle = { title: this.state.listTitle };
-      extracts.unshift(deckTitle);
-      extracts = [extracts];
-
-      var regex = /(<([^>]+)>)/gi;
-      for (var i = 0; i < extracts[0].length; i++) {
-        if (extracts[0][i].extract) {
-          extracts[0][i].extract = extracts[0][i].extract.replace(regex, '');
-        }
-        console.log(extracts[0][i].extract);
-      }
-      extracts = this.state.cardItems.concat(extracts);
-      this.setState({ cardItems: extracts });
-    });
+  // Step three
+  setCardsState(extracts) {
+    this.setState({ cardItems: extracts });
   }
 
   toggleView(evt) {
@@ -318,7 +261,10 @@ class App extends Component {
                     style={{ visibility: 'hidden' }}
                   >
                     <h2>Page Titles</h2>
-                    <CardButton id="button" createCards={this.createCards} />
+                    <CardButton
+                      id="button"
+                      setCardsState={this.setCardsState}
+                    />
                     <h4
                       className="otherListHider"
                       style={{ visibility: 'hidden' }}
