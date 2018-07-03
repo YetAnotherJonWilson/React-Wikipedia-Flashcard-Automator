@@ -12,16 +12,16 @@ class CardButton extends Component {
   createCards(evt) {
     // check for duplicates
     var duplicatesArray = [];
-    this.state.cardItems.forEach(x => {
+    this.props.cardItems.forEach(x => {
       duplicatesArray.push(x[0].title);
     });
-    if (duplicatesArray.includes(this.state.listTitle)) {
+    if (duplicatesArray.includes(this.props.listTitle)) {
       console.log('contained');
       return;
     }
 
     var pageTitles = [];
-    this.state.wikiPageTitles.forEach(title => {
+    this.props.wikiPageTitles.forEach(title => {
       pageTitles.push(title);
     });
     console.log('PageTitlesLength: ', pageTitles.length);
@@ -42,7 +42,7 @@ class CardButton extends Component {
           .then(
             result => {
               extracts = extracts.concat(result.query.pages);
-              if (extracts.length === this.state.wikiPageTitles.length) {
+              if (extracts.length === this.props.wikiPageTitles.length) {
                 resolve(extracts);
               }
             },
@@ -55,7 +55,7 @@ class CardButton extends Component {
 
     fetchWiki.then(extracts => {
       console.log('extracts', extracts);
-      var deckTitle = { title: this.state.listTitle };
+      var deckTitle = { title: this.props.listTitle };
       extracts.unshift(deckTitle);
       extracts = [extracts];
 
@@ -66,7 +66,7 @@ class CardButton extends Component {
         }
         console.log(extracts[0][i].extract);
       }
-      extracts = this.state.cardItems.concat(extracts);
+
       this.props.setCardsState(extracts);
     });
   }
