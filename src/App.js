@@ -2,14 +2,11 @@ import React, { Component } from 'react';
 import CardButton from './CardButton';
 import ChooseDeck from './ChooseDeck';
 import CategoryItems from './CategoryItems';
+import SearchButton from './SearchButton';
 import {
-  Button,
   Grid,
   Row,
   Col,
-  FormGroup,
-  ControlLabel,
-  FormControl,
   Navbar,
   Nav,
   NavItem,
@@ -40,7 +37,7 @@ class App extends Component {
       openDeckArray: []
     };
 
-    this.onInputChange = this.onInputChange.bind(this);
+    this.changeFields = this.changeFields.bind(this);
     this.getCategories = this.getCategories.bind(this);
     this.toggleView = this.toggleView.bind(this);
     this.startSearch = this.startSearch.bind(this);
@@ -73,9 +70,7 @@ class App extends Component {
     });
   }
 
-  onInputChange(evt) {
-    const fields = this.state.fields;
-    fields[evt.target.name] = evt.target.value;
+  changeFields(fields) {
     this.setState({ fields });
   }
 
@@ -263,18 +258,11 @@ class App extends Component {
             <Row>
               <Col md={4} />
               <Col md={3}>
-                <form onSubmit={this.startSearch}>
-                  <FormGroup>
-                    <ControlLabel>Wikipedia page title:</ControlLabel>
-                    <FormControl
-                      placeholder="Title"
-                      name="title"
-                      value={this.state.fields.title}
-                      onChange={this.onInputChange}
-                    />
-                    <Button type="submit">Submit</Button>
-                  </FormGroup>
-                </form>
+                <SearchButton
+                  fields={this.state.fields}
+                  startSearch={this.startSearch}
+                  changeFields={this.changeFields}
+                />
               </Col>
             </Row>
             <Row>
