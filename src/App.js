@@ -3,16 +3,8 @@ import CardButton from './CardButton';
 import ChooseDeck from './ChooseDeck';
 import CategoryItems from './CategoryItems';
 import SearchButton from './SearchButton';
-import {
-  Grid,
-  Row,
-  Col,
-  Navbar,
-  Nav,
-  NavItem,
-  ListGroup,
-  ListGroupItem
-} from 'react-bootstrap';
+import NavigationHeader from './NavigationHeader';
+import { Grid, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
 
@@ -244,15 +236,7 @@ class App extends Component {
       <div className="App">
         {/* Simple Storage handles localstorage */}
         <SimpleStorage parent={this} />
-        <Navbar>
-          <Navbar.Header>
-            <Navbar.Brand>Wikipedia Flashcard Automator</Navbar.Brand>
-          </Navbar.Header>
-          <Nav>
-            <NavItem onClick={this.toggleView}>Create a deck</NavItem>
-            <NavItem onClick={this.toggleView}>See all decks</NavItem>
-          </Nav>
-        </Navbar>
+        <NavigationHeader toggleView={this.toggleView} />
         {this.state.searchPage && (
           <Grid>
             <Row>
