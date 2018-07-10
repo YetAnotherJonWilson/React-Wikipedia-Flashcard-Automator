@@ -252,7 +252,7 @@ class App extends Component {
             <Row>
               <div>
                 <Col md={4}>
-                  <div className="listHider" style={{ visibility: 'hidden' }}>
+                  <div>
                     <h2>Categories</h2>
                     <CategoryItems
                       wikiCategories={this.state.wikiCategories}
@@ -261,10 +261,7 @@ class App extends Component {
                   </div>
                 </Col>
                 <Col md={4}>
-                  <div
-                    className="otherListHider"
-                    style={{ visibility: 'hidden' }}
-                  >
+                  <div className="List-column">
                     <h2>Lists</h2>
                     <ListGroup>
                       {this.state.wikiListofLists.map((listItem, i) => {
@@ -282,10 +279,7 @@ class App extends Component {
                   </div>
                 </Col>
                 <Col md={4}>
-                  <div
-                    className="otherListHider"
-                    style={{ visibility: 'hidden' }}
-                  >
+                  <div className="List-column">
                     <h2>Page Titles</h2>
                     <CardButton
                       id="button"

@@ -30,9 +30,14 @@
 }
 
 #No-categories {
-  display: none
+  display: none;
 }
 
 #button {
   margin-bottom: 5px !important;
+}
+
+.List-column {
+  min-height: 500px;
+  border-left: 1px solid black;
 }
