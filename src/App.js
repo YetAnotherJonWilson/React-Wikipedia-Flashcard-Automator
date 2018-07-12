@@ -22,9 +22,7 @@ class App extends Component {
       wikiPageTitles: [],
       wikiListofLists: [],
       cardItems: [],
-      searchResultsHeaders: {
-        visibility: 'hidden'
-      },
+
       openDeck: '',
       openDeckArray: []
     };
@@ -54,9 +52,7 @@ class App extends Component {
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
-      searchResultsHeaders: {
-        visibility: 'hidden'
-      },
+
       openDeck: '',
       openDeckArray: []
     });
@@ -107,9 +103,7 @@ class App extends Component {
           var categoriesArray = categoriesList.map(category => {
             return category.title;
           });
-          document
-            .querySelectorAll('.listHider')
-            .forEach(x => (x.style.visibility = 'visible')); // eslint-disable-line
+
           this.setState({
             wikiCategories: categoriesArray
           });
@@ -177,12 +171,7 @@ class App extends Component {
             category =>
               category.includes('List of') || category.includes('Lists of')
           );
-          document
-            .querySelectorAll('.otherListHider')
-            .forEach(x => (x.style.visibility = 'visible')); // eslint-disable-line
-          if (wikiPageTitles[0]) {
-            document.querySelector('.cardButton').style.visibility = 'visible';
-          }
+
           this.setState({
             listTitle: correctCategoryTitle,
             wikiCategories: wikiListCategories,
@@ -223,9 +212,7 @@ class App extends Component {
       wikiCategories: [],
       wikiPageTitles: [],
       wikiListofLists: [],
-      searchResultsHeaders: {
-        visibility: 'hidden'
-      },
+
       openDeck: '',
       openDeckArray: []
     });
@@ -288,12 +275,7 @@ class App extends Component {
                       listTitle={this.state.listTitle}
                       wikiPageTitles={this.state.wikiPageTitles}
                     />
-                    <h4
-                      className="otherListHider"
-                      style={{ visibility: 'hidden' }}
-                    >
-                      List Title: {this.state.listTitle}
-                    </h4>
+                    <h4>List Title: {this.state.listTitle}</h4>
                     <ListGroup>
                       {this.state.wikiPageTitles.map((title, i) => {
                         return <ListGroupItem key={i}>{title}</ListGroupItem>;

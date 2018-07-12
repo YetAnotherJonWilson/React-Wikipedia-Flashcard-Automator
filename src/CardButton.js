@@ -76,7 +76,6 @@ class CardButton extends Component {
       <div>
         <Button
           className="cardButton"
-          style={{ visibility: 'hidden' }}
           bsStyle="primary"
           onClick={this.createCards}
         >

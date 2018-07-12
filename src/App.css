@@ -21,18 +21,6 @@
   list-style-type: none;
 }
 
-#Categories-section {
-  display: none;
-}
-
-#List-of-results-section {
-  display: none;
-}
-
-#No-categories {
-  display: none;
-}
-
 #button {
   margin-bottom: 5px !important;
 }
