@@ -196,8 +196,10 @@ class App extends Component {
 
   toggleView(evt) {
     if (evt.target.innerHTML === 'Create a deck') {
+      this.saveStateToLocalStorage();
       this.setState({ searchPage: true });
     } else {
+      this.saveStateToLocalStorage();
       this.setState({ searchPage: false });
     }
   }
