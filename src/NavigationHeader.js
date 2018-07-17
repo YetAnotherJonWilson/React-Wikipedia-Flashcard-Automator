@@ -5,13 +5,15 @@ class NavigationHeader extends Component {
   render() {
     return (
       <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>Wikipedia Flashcard Automator</Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-          <NavItem onClick={this.props.toggleView}>Create a deck</NavItem>
-          <NavItem onClick={this.props.toggleView}>See all decks</NavItem>
-        </Nav>
+        <div className="Navbar-row">
+          <Nav>
+            <NavItem onClick={this.props.toggleView}>Create a deck</NavItem>
+            <NavItem onClick={this.props.toggleView}>See all decks</NavItem>
+          </Nav>
+          <Navbar.Header>
+            <Navbar.Brand>Wikipedia Flashcard Automator</Navbar.Brand>
+          </Navbar.Header>
+        </div>
       </Navbar>
     );
   }

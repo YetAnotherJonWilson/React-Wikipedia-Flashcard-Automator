@@ -9,12 +9,29 @@
   color: white;
 }
 
+.Navbar-row {
+  margin-left: 50%;
+}
+
+.navbar-brand {
+  font-size: large !important;
+  font-weight: bold !important;
+}
+
+.nav {
+  margin-right: 40px;
+}
+
 .App-title {
   font-size: 1.5em;
 }
 
 .App-intro {
   font-size: large;
+}
+
+.Search-button {
+  margin-top: 5px;
 }
 
 .No-style-list {

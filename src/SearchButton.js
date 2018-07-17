@@ -25,7 +25,9 @@ class SearchButton extends Component {
             value={this.props.fields.title}
             onChange={this.onInputChange}
           />
-          <Button type="submit">Submit</Button>
+          <Button bsStyle="primary" type="submit" className="Search-button">
+            Submit
+          </Button>
         </FormGroup>
       </form>
     );
