@@ -35,13 +35,11 @@ class App extends Component {
     this.fromCategoryToPageids = this.fromCategoryToPageids.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener(
       'beforeunload',
       this.saveStateToLocalStorage.bind(this)
     );
-    // const wikiItems = [this.state.wikiCategories, this.state.wikiListofLists, this.state.cardItems]
-    // if(this.state.)
   }
 
   saveStateToLocalStorage() {
