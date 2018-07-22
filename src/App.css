@@ -19,6 +19,11 @@
   margin-top: 5px;
 }
 
+.Infotext {
+  padding-top: 25px;
+  color: gray;
+}
+
 .No-style-list {
   list-style-type: none;
 }

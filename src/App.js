@@ -40,6 +40,8 @@ class App extends Component {
       'beforeunload',
       this.saveStateToLocalStorage.bind(this)
     );
+    // const wikiItems = [this.state.wikiCategories, this.state.wikiListofLists, this.state.cardItems]
+    // if(this.state.)
   }
 
   saveStateToLocalStorage() {
@@ -243,33 +245,48 @@ class App extends Component {
                 <Col md={4}>
                   <div>
                     <h2>Categories</h2>
-                    <CategoryItems
-                      wikiCategories={this.state.wikiCategories}
-                      fromCategoryToPageids={this.fromCategoryToPageids}
-                    />
+                    {this.state.wikiCategories.length === 0 && (
+                      <h4 className="Infotext">
+                        Wikipedia category titles will appear here
+                      </h4>
+                    )}
+                    {this.state.wikiCategories && (
+                      <CategoryItems
+                        wikiCategories={this.state.wikiCategories}
+                        fromCategoryToPageids={this.fromCategoryToPageids}
+                      />
+                    )}
                   </div>
                 </Col>
                 <Col md={4}>
                   <div className="List-column">
                     <h2>Lists</h2>
-                    <ListGroup>
-                      {this.state.wikiListofLists.map((listItem, i) => {
-                        return (
-                          <ListGroupItem
-                            key={i}
-                            id="button"
-                            onClick={this.getCategories}
-                          >
-                            {listItem}
-                          </ListGroupItem>
-                        );
-                      })}
-                    </ListGroup>
+                    {this.state.wikiListofLists.length === 0 && (
+                      <h4 className="Infotext">
+                        Wikipedia list titles will appear here
+                      </h4>
+                    )}
+                    {this.state.wikiCategories && (
+                      <ListGroup>
+                        {this.state.wikiListofLists.map((listItem, i) => {
+                          return (
+                            <ListGroupItem
+                              key={i}
+                              id="button"
+                              onClick={this.getCategories}
+                            >
+                              {listItem}
+                            </ListGroupItem>
+                          );
+                        })}
+                      </ListGroup>
+                    )}
                   </div>
                 </Col>
                 <Col md={4}>
                   <div className="List-column">
                     <h2>Page Titles</h2>
+
                     <CardButton
                       id="button"
                       setCardsState={this.setCardsState}
@@ -278,11 +295,18 @@ class App extends Component {
                       wikiPageTitles={this.state.wikiPageTitles}
                     />
                     <h4>List Title: {this.state.listTitle}</h4>
-                    <ListGroup>
-                      {this.state.wikiPageTitles.map((title, i) => {
-                        return <ListGroupItem key={i}>{title}</ListGroupItem>;
-                      })}
-                    </ListGroup>
+                    {this.state.wikiPageTitles.length === 0 && (
+                      <h4 className="Infotext">
+                        Wikipedia list of pages will appear here
+                      </h4>
+                    )}
+                    {this.state.wikiPageTitles && (
+                      <ListGroup>
+                        {this.state.wikiPageTitles.map((title, i) => {
+                          return <ListGroupItem key={i}>{title}</ListGroupItem>;
+                        })}
+                      </ListGroup>
+                    )}
                   </div>
                 </Col>
               </div>

@@ -79,7 +79,7 @@ class CardButton extends Component {
           bsStyle="primary"
           onClick={this.createCards}
         >
-          Create Flashcards from this List
+          Create Flashcards from the List Below
         </Button>
       </div>
     );
