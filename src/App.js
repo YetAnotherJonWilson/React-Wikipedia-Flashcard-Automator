@@ -204,22 +204,6 @@ class App extends Component {
     }
   }
 
-  componentWillUnmount() {
-    this.setState({
-      fields: {
-        title: ''
-      },
-      searchPage: true,
-      listTitle: '',
-      wikiCategories: [],
-      wikiPageTitles: [],
-      wikiListofLists: [],
-
-      openDeck: '',
-      openDeckArray: []
-    });
-  }
-
   render() {
     return (
       <div className="App">
