@@ -73,15 +73,13 @@ class CardButton extends Component {
 
   render() {
     return (
-      <div>
-        <Button
-          className="cardButton"
-          bsStyle="primary"
-          onClick={this.createCards}
-        >
-          Create Flashcards from the List Below
-        </Button>
-      </div>
+      <Button
+        className="cardButton"
+        bsStyle="primary"
+        onClick={this.createCards}
+      >
+        Create Flashcards from the List Below
+      </Button>
     );
   }
 }
