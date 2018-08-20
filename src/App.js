@@ -250,17 +250,15 @@ class App extends Component {
                     )}
                     {this.state.wikiCategories && (
                       <ListGroup>
-                        {this.state.wikiListofLists.map((listItem, i) => {
-                          return (
-                            <ListGroupItem
-                              key={i}
-                              id="button"
-                              onClick={this.getCategories}
-                            >
-                              {listItem}
-                            </ListGroupItem>
-                          );
-                        })}
+                        {this.state.wikiListofLists.map((listItem, i) => (
+                          <ListGroupItem
+                            key={i}
+                            id="button"
+                            onClick={this.getCategories}
+                          >
+                            {listItem}
+                          </ListGroupItem>
+                        ))}
                       </ListGroup>
                     )}
                   </div>

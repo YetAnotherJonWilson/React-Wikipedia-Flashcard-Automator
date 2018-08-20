@@ -15,13 +15,11 @@ class CategoryItems extends Component {
   render() {
     return (
       <ListGroup>
-        {this.props.wikiCategories.map((category, i) => {
-          return (
-            <ListGroupItem key={i} id="button" onClick={this.onCategoryClick}>
-              {category}
-            </ListGroupItem>
-          );
-        })}
+        {this.props.wikiCategories.map((category, i) => (
+          <ListGroupItem key={i} id="button" onClick={this.onCategoryClick}>
+            {category}
+          </ListGroupItem>
+        ))}
       </ListGroup>
     );
   }
