@@ -1,5 +1,7 @@
 # Wikipedia Flashcard Automator
 
+Working demo here: https://git.heroku.com/wikipedia-flashcard-automator.git
+
 Uses Wikipedia's API to automate the process of building lists of items to study from Wikipedia lists, using page extracts.
 
 ## MVP Complete
