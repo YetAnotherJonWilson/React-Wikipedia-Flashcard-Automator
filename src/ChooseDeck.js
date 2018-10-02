@@ -38,30 +38,38 @@ class ChooseDeck extends Component {
   }
 
   render() {
+    const Dropdown = (
+      <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
+        {this.props.cardItems.map((x, i) => (
+          <MenuItem onClick={this.chooseDeck} key={i}>
+            {x[0].title}
+          </MenuItem>
+        ))}
+      </DropdownButton>
+    );
+
+    const PanelGroup = (
+      <PanelGroup accordion id="Cards">
+        {this.state.openDeckArray.map((z, k) => (
+          <Panel eventKey={k} key={k}>
+            <Panel.Heading>
+              <Panel.Title toggle>{z.title}</Panel.Title>
+            </Panel.Heading>
+            <Panel.Body collapsible>{z.extract}</Panel.Body>
+          </Panel>
+        ))}
+      </PanelGroup>
+    );
+
     return (
       <Grid>
         <Row>
           <Col md={3} />
           <Col md={6}>
-            <DropdownButton title="Choose a deck" id="bg-nested-dropdown">
-              {this.props.cardItems.map((x, i) => (
-                <MenuItem onClick={this.chooseDeck} key={i}>
-                  {x[0].title}
-                </MenuItem>
-              ))}
-            </DropdownButton>
+            {Dropdown}
             <div id="openDeck" style={{ visibility: 'hidden' }}>
               <h3>{this.state.openDeck}</h3>
-              <PanelGroup accordion id="Cards">
-                {this.state.openDeckArray.map((z, k) => (
-                  <Panel eventKey={k} key={k}>
-                    <Panel.Heading>
-                      <Panel.Title toggle>{z.title}</Panel.Title>
-                    </Panel.Heading>
-                    <Panel.Body collapsible>{z.extract}</Panel.Body>
-                  </Panel>
-                ))}
-              </PanelGroup>
+              {PanelGroup}
             </div>
           </Col>
         </Row>
