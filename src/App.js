@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CardButton from './CardButton';
 import ChooseDeck from './ChooseDeck';
 import CategoryItems from './CategoryItems';
-import SearchButton from './SearchButton';
 import NavigationHeader from './NavigationHeader';
 import { Grid, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';

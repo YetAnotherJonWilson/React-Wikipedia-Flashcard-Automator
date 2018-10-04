@@ -5,7 +5,6 @@ import {
   Col,
   DropdownButton,
   MenuItem,
-  PanelGroup,
   Panel
 } from 'react-bootstrap';
 
