@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 
-class SearchButton extends Component {
+export default class SearchButton extends Component {
   constructor(props) {
     super(props);
 
@@ -33,5 +33,3 @@ class SearchButton extends Component {
     );
   }
 }
-
-export default SearchButton;

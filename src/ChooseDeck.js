@@ -8,7 +8,7 @@ import {
   Panel
 } from 'react-bootstrap';
 
-class ChooseDeck extends Component {
+export default class ChooseDeck extends Component {
   constructor(props) {
     super(props);
 
@@ -76,5 +76,3 @@ class ChooseDeck extends Component {
     );
   }
 }
-
-export default ChooseDeck;

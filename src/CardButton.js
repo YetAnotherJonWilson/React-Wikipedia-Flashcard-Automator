@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-class CardButton extends Component {
+export default class CardButton extends Component {
   constructor(props) {
     super(props);
 
@@ -83,5 +83,3 @@ class CardButton extends Component {
     );
   }
 }
-
-export default CardButton;

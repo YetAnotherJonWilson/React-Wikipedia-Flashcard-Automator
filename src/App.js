@@ -7,7 +7,7 @@ import { Grid, Row, Col, ListGroup, ListGroupItem } from 'react-bootstrap';
 import SimpleStorage from 'react-simple-storage';
 import './App.css';
 
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -298,5 +298,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

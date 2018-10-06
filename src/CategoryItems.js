@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
-class CategoryItems extends Component {
+export default class CategoryItems extends Component {
   constructor(props) {
     super(props);
 
@@ -24,5 +24,3 @@ class CategoryItems extends Component {
     );
   }
 }
-
-export default CategoryItems;
